@@ -91,21 +91,16 @@ pseudo: routine test
       print "Divisible by 3"
     else
       print "Not Divisible by 3"
-		
-		
-		Pseudo routine :
+Pseudo routine :
 			function IsDivisibleBy3(num)
 				if num % 3 == 0
             return True
         else
-            return False
-				
-				
-		
-		Pseudo: routine test
-			Procedure TestIsDivisibleBy3()
-				Input num
-				if IsDivisibleBy3(num)
+            return False	
+Pseudo: routine test
+	Procedure TestIsDivisibleBy3()
+		Input num
+		if IsDivisibleBy3(num)
             print "Divisible by 3"
         else
             print "Not Divisible by 3"
@@ -160,5 +155,82 @@ routine:
     
 routine test:
  procedure printNnaturalnumbers(N)
- 
+1. to check a number palindrome. Sarika 
+pseudocode:
+Start
+    Input num
+    Convert num to string
+    Reverse the string
+    If reversed string is equal to original string
+        Print "Palindrome"
+    Else
+        Print "Not a Palindrome"
+End
+routine:
+Function testIspallindrome
+ If reversedStr is equal to originalStr
+        Print "Palindrome"
+    Else
+        Print "Not a Palindrome"
+routine test:
 
+ Function testIsPalindrome()
+ If isPalindrome(num) is True
+                Print num, "is a Palindrome"
+            Else
+                Print num, "is Not a Palindrome"
+2. to check a number amstrong. Collin 
+pseudocode:
+Start
+    Input num
+    Convert num to string
+    Calculate the number of digits in num
+    Initialize sum to 0
+    For each digit in num
+        Raise the digit to the power of the number of digits
+        Add the result to sum
+    If sum is equal to num
+        Print "Armstrong Number"
+    Else
+        Print "Not an Armstrong Number"
+End
+routine:
+ Function isArmstrong(num)
+If sum is equal to num
+            Return True
+        Else
+            Return False
+routine test:
+ procedure testIsArmstrong()
+        Input num
+        If isArmstrong(num) is True
+            Print "Armstrong Number"
+        Else
+            Print "Not an Armstrong Number"
+3. to check a number prime. Ann Maria 
+pseudocode:
+Start
+    Input num
+    If num <= 1
+        Print "Not Prime"
+    For i = 2 to sqrt(num)
+        If num % i == 0
+            Print "Not Prime"
+            Return
+    Print "Prime"
+End
+routine:
+ Function isPrime(num)
+        If num <= 1
+            Return False
+        For i = 2 to sqrt(num)
+            If num % i == 0
+                Return False
+        Return True
+routine test:
+procedure testIsPrime()
+        Input num
+        If isPrime(num) is True
+            Print "Prime"
+        Else
+            Print "Not Prime"
