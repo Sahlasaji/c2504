@@ -1,0 +1,164 @@
+19.To find the average of two numbers.
+pseudo: input number1
+        input number2
+        sum = number1 + number2
+        average= sum/2
+        print average
+
+pseudo: routine
+        Function FindAvg(num1 , num2)
+        sum = num1 + num2
+        average = sum/2
+        return average
+
+pseudo: routine test
+        Fuction Testfindavg()
+        input num1, num2
+        average = FindAvg(num1,num2)
+        print average
+
+20.To find cube of number 
+pseudo:
+       Input num
+       cube = num * num  * num
+       Print cube
+
+pseudo : routine
+       Function FindCube(num)
+       cube = num * num * num
+       Return cube
+
+pseudo: routine test
+       Function TestFindCube()
+       Input num 
+       cube = FindCube(num)
+       Print cube   
+15.to find the square of anumber
+pseudo:
+       Input num
+       cube = num * num  
+       Print square
+
+pseudo : routine
+       Function Findsquare(num)
+       cube = num * num 
+       Return square
+
+pseudo: routine test
+       Function TestFindsquare()
+       Input num 
+       square = Findsquare(num)
+       Print square
+9. swap two numbers. Minnu
+
+
+    Pseudocode :
+		
+		Input num1
+    Input num2
+    
+
+    temp = num1
+    num1 = num2
+    num2 = temp
+    
+		print num1,num2
+
+    pseudo: routine
+
+       function Swap(num1,num2)
+         
+         temp = num1
+         num1 = num2
+         num2 = temp
+         return num1,num2
+
+   pseudo: routine test
+       Procedure TestSwap()
+           Input num1
+           Input num2
+           swapping = Swap(num1,num2)
+           print swapping
+
+
+
+28. to check nubmer is divisible by 3. Ashwin.
+
+    Pseudocode : 
+		
+		Input num
+		if num % 3 == 0
+      print "Divisible by 3"
+    else
+      print "Not Divisible by 3"
+		
+		
+		Pseudo routine :
+			function IsDivisibleBy3(num)
+				if num % 3 == 0
+            return True
+        else
+            return False
+				
+				
+		
+		Pseudo: routine test
+			Procedure TestIsDivisibleBy3()
+				Input num
+				if IsDivisibleBy3(num)
+            print "Divisible by 3"
+        else
+            print "Not Divisible by 3"
+			
+
+
+11. number divisible by 27. Abijith 
+
+
+    Pseudocode : 
+
+    Input num
+		if num % 27 == 0
+      print "Divisible by 27"
+    else
+      print "Not Divisible by 27"
+		
+		
+		Pseudo routine :
+			function IsDivisibleBy27(num)
+				if num % 27 == 0
+            return True
+        else
+            return False
+				
+				
+		
+		Pseudo: routine test
+  
+			Procedure TestIsDivisibleBy3()
+				Input num
+				if IsDivisibleBy3(num)
+            print "Divisible by 3"
+        else
+            print "Not Divisible by 3
+14. to print N natural numbers. Shilpa
+pseudocode:
+Start
+    Input N
+    For i = 1 to N
+        Print i
+End
+routine:
+ function printNnaturalnumbers(N)
+    If N <= 0
+        Print "Invalid input: N should be a positive integer."
+        Exit
+    End If
+    For i = 1 to N
+        Print i
+    End For
+    
+routine test:
+ procedure printNnaturalnumbers(N)
+ 
+
