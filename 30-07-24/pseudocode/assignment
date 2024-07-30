@@ -54,16 +54,13 @@ pseudo: routine test
 
 
     Pseudocode :
-		
-		Input num1
+    Input num1
     Input num2
-    
-
     temp = num1
     num1 = num2
     num2 = temp
     
-		print num1,num2
+  print num1,num2
 
     pseudo: routine
 
@@ -86,7 +83,6 @@ pseudo: routine test
 28. to check nubmer is divisible by 3. Ashwin.
 
     Pseudocode : 
-		
 		Input num
 		if num % 3 == 0
       print "Divisible by 3"
@@ -156,6 +152,11 @@ routine:
     
 routine test:
  procedure printNnaturalnumbers(N)
+Function PrintNNaturalNumbers(N)
+        For i = 1 to N
+            Print i
+    End Function
+
 1. to check a number palindrome. Sarika 
 pseudocode:
 Start
