@@ -181,31 +181,3 @@ routine test:
                 Print num, "is a Palindrome"
             Else
                 Print num, "is Not a Palindrome"
-2. to check a number amstrong. Collin 
-pseudocode:
-Start
-    Input num
-    Convert num to string
-    Calculate the number of digits in num
-    Initialize sum to 0
-    For each digit in num
-        Raise the digit to the power of the number of digits
-        Add the result to sum
-    If sum is equal to num
-        Print "Armstrong Number"
-    Else
-        Print "Not an Armstrong Number"
-End
-routine:
- Function isArmstrong(num)
-If sum is equal to num
-            Return True
-        Else
-            Return False
-routine test:
- procedure testIsArmstrong()
-        Input num
-        If isArmstrong(num) is True
-            Print "Armstrong Number"
-        Else
-            Print "Not an Armstrong Number"
