@@ -28,6 +28,7 @@ pseudo : routine
        cube = num * num * num
        Return cube
 
+
 pseudo: routine test
        Function TestFindCube()
        Input num 
@@ -234,3 +235,33 @@ procedure testIsPrime()
             Print "Prime"
         Else
             Print "Not Prime"
+
+7. to check a number perfect number. Anjana N K
+pseudocode:
+    Input num
+    Initialize sum to 0
+    For i = 1 to num/2
+        If num % i == 0
+            Add i to sum
+    If sum is equal to num
+        Print "Perfect Number"
+    Else
+        Print "Not a Perfect Number"
+pseudocode routine:
+
+Function isPerfectNumber(num)
+        Initialize sum to 0
+        For i = 1 to num / 2
+            If num % i == 0
+                Add i to sum
+        If sum is equal to num
+            Return True
+        Else
+            Return False
+routine test:
+procedure testIsPerfectNumber()
+        Input num
+        If isPerfectNumber(num) is True
+            Print "Perfect Number"
+        Else
+            Print "Not a Perfect Number"
