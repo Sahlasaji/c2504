@@ -299,3 +299,73 @@
         Console.ReadKey();
     }
 }
+7./Minimal Salary Of Doctors
+
+class MinimalSalaryOfDoctors
+{
+    static void FindMinSalaryOfNDoctors()
+    {
+        int minSalary = -1;
+        Console.Write("Enter the number of salaries: ");
+        int N = int.Parse(Console.ReadLine());
+
+        for (int i = 1; i <= N; i++)
+        {
+            Console.Write($"Enter salary for doctor {i}: ");
+            int salary = int.Parse(Console.ReadLine());
+
+            if (i == 1)
+            {
+                minSalary = salary;
+                continue;
+            }
+
+            if (salary < minSalary)
+            {
+                minSalary = salary;
+            }
+        }
+
+        Console.WriteLine("The minimum salary among the doctors is: " + minSalary);
+    }
+
+    static void Main()
+    {
+        FindMinSalaryOfNDoctors();
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+}
+6.class ReadAndCountDoctorsMin6DigitsSalaried
+{
+static bool IsDoctorSalaryMin6Digits(int salary)
+    {
+        return salary >= 100000;
+    }
+ static int ReadAndCountDoctorsMin6DigitsSalaried()
+    {
+        int count = 0;
+
+        Console.WriteLine("Enter the number of doctors: ");
+        int N = int.Parse(Console.ReadLine());
+
+        for (int i = 1; i <= N; i++)
+        {
+            Console.WriteLine($"Enter the salary for doctor {i}: ");
+            int salary = int.Parse(Console.ReadLine());
+
+            bool isMin6Digits = IsDoctorSalaryMin6Digits(salary);
+            if (isMin6Digits)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+ static void Main(string[] args)
+    {
+        int count = ReadAndCountDoctorsMin6DigitsSalaried();
+        Console.WriteLine("Number of doctors with at least 6-digit salaries: " + count);
+    }
+}
