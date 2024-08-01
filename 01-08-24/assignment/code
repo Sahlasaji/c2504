@@ -1,4 +1,4 @@
-1.// [Grish] solving 
+1.IsDoctorSalaryMin6Digits
 function IsDoctorSalaryMin6Digits(doctorSalary) 
         salary = doctorSalary
 
@@ -10,7 +10,7 @@ function IsDoctorSalaryMin6Digits(doctorSalary)
         end while 
         return count >= 6
 
-// [Ann Mariya] modified solution for O(1) 
+
 function IsDoctorSalaryMin6Digits(doctorSalary) 
     return doctorSalary >= 100000
 
@@ -45,11 +45,11 @@ function TestCount6DigitsSalariedDoctors()
     sixDigitsSalariedCount = Count6DigitsSalariedDoctors(salaries, size)
     print sixDigitsSalariedCount
 
-//[Ashok, Ann Maria, Shilpa, Minnu..]
+
 CountDoctors6DigitsSalaried without array or N salaries
 
 function ReadAndCountDoctors6DigitsSalaried(): 
-[Minnu: without array]
+
     count = 0 
     Input N //number of salaries 
     for I = 1 .. N 
@@ -59,7 +59,7 @@ function ReadAndCountDoctors6DigitsSalaried():
             count += 1
         end if 
 
-//[Ashok / Shilpa]
+
 ReadAndFindMinSalaryOfNDoctors without array 
 
 function ReadAndFindMinSalaryOfNDoctors():
@@ -76,11 +76,10 @@ function ReadAndFindMinSalaryOfNDoctors():
             MinSalary = salary
         end if 
 
-//[Nivya | Roshith | Alan Kuriakose]
+
 ReadAndFindSumOfDoctorsSalariesTillZero: without array 
     [sal1, sal2, ... 0]
-    
-    loop pick : for | while | do..while 
+   
 
 function ReadAndFindSumOfDoctorsSalariesTillZero()
     sum = 0 
@@ -126,10 +125,10 @@ function ReadAndFindSumOfDoctorsSalariesTillZero()
         input salary
     end while 
     print sum 
-2.class IsDoctorSalaryMin6DigitsSarikaTwoTests
+2.TestIsDoctorSalaryMin6Digits
+        class IsDoctorSalaryMin6Digits
 {
-    //Yahkoob | Gopika[ok] | Dijol[ok|qn] | Collin[ok] | Neha[ok] | Aaryaka[ok|qn] | Shilpa[ok|qn] | Keerthana[ok|qn]
-    //Ann Maria[ok|qn]
+    
     static bool IsDoctorSalaryMin6Digits(int doctorSalary)
     {
         int salary = doctorSalary;
@@ -185,12 +184,11 @@ function ReadAndFindSumOfDoctorsSalariesTillZero()
         Console.ReadKey();
     }
 }
-3.class TestCountMin6DigitsSalariedDoctorsAnnMariya
+4.CountMin6DigitsSalariedDoctors
 {
-    //Yahkoob | Gopika[ok] | Dijol[ok|qn] | Collin[ok] | Neha[ok] | Aaryaka[ok|qn] | Shilpa[ok|qn] | Keerthana[ok|qn]
-    //Ann Maria[ok|qn]
-    //Anjana E R[ok] | Neha[ok|qn] | Sarika[ok|qn]
-    //GladsyJoshy | Kuriakose[qn] | Minnu[qn] | Athulya[qn]
+        class TestCountMin6DigitsSalariedDoctors
+{
+    
     static bool IsDoctorSalaryMin6Digits(int doctorSalary) //Ann Mariya version
     {
         return doctorSalary >= 100000;
@@ -236,10 +234,7 @@ function ReadAndFindSumOfDoctorsSalariesTillZero()
         Console.ReadKey();
     }class TestCountMin6DigitsSalariedDoctorsGirisGladsy
 {
-    //Yahkoob | Gopika[ok] | Dijol[ok|qn] | Collin[ok] | Neha[ok] | Aaryaka[ok|qn] | Shilpa[ok|qn] | Keerthana[ok|qn]
-    //Ann Maria[ok|qn]
-    //Anjana E R[ok] | Neha[ok|qn] | Sarika[ok|qn]
-    //GladsyJoshy | Kuriakose[qn] | Minnu[qn] | Athulya[qn] | Sarika[qn]
+  
     static bool IsDoctorSalaryMin6Digits(int doctorSalary)
     {
         int salary = doctorSalary;
@@ -295,45 +290,10 @@ function ReadAndFindSumOfDoctorsSalariesTillZero()
         Console.ReadKey();
     }
 }
-5.class TestIsDoctorSalaryMin6DigitsGirish
-{
-    //Yahkoob | Gopika[ok] | Dijol[ok|qn] | Collin[ok] | Neha[ok] | Aaryaka[ok|qn] | Shilpa[ok|qn] | Keerthana[ok|qn]
-    //Ann Maria[ok|qn]
-    static bool IsDoctorSalaryMin6Digits(int doctorSalary)
-    {
-        int salary = doctorSalary;
 
-        int count = 0;
-        while (salary > 0)
-        {
-            int digit = salary % 10;
-            count += 1;
-            salary = salary / 10;
-        }
-
-        return count >= 6;
-    }
-    // input=678943, output="Doctor gets 6 digits salary"
-    // input=67894, ouput=no output
-    static void TestIsDoctorSalaryMin6Digits()
-    {
-        int doctorSalary = int.Parse(Console.ReadLine());
-        if( IsDoctorSalaryMin6Digits(doctorSalary) )
-        {
-            Console.WriteLine("Doctor gets 6 digits salary");
-        }
-    }
-    static void Main(string[] args) //user: p
-    {
-        TestIsDoctorSalaryMin6Digits();
-        Console.WriteLine("Press any key to contine...");
-        Console.ReadKey();
-    }        
-}
-6.class TestIsDoctorSalaryMin6DigitsOrNotGirish
+3.TestIsDoctorSalaryMin6DigitsOrNot
 {
-    //Yahkoob | Gopika[ok] | Dijol[ok|qn] | Collin[ok] | Neha[ok] | Aaryaka[ok|qn] | Shilpa[ok|qn] | Keerthana[ok|qn]
-    //Ann Maria[ok|qn]
+        class TestIsDoctorSalaryMin6Digits
     static bool IsDoctorSalaryMin6Digits(int doctorSalary)
     {
         int salary = doctorSalary;
@@ -373,4 +333,3 @@ function ReadAndFindSumOfDoctorsSalariesTillZero()
     
 }
 }
-4.
