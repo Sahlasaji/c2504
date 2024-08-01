@@ -1,5 +1,5 @@
 
-2.TestIsDoctorSalaryMin6Digits
+1.TestIsDoctorSalaryMin6Digits
         class IsDoctorSalaryMin6Digits
 {
     
@@ -20,7 +20,7 @@
     // input=678943, output="Doctor gets 6 digits salary"
     // input=67894, ouput="Doctor does not get 6 digits salary"
     // input=67894356, output="Doctor gets 6 digits salary"
-    //Anjana E R[ok] | Neha[ok|qn] | Sarika[ok|qn]
+   
     static void TestIsDoctorSalaryMin6DigitsOrNot()
     {
         Console.WriteLine("Enter doctor salary:");
