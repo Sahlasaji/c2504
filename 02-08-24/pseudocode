@@ -547,3 +547,137 @@ End
         Call PrintNthFibonacciDoWhileLoop(N)
     End Function
 End
+16.Start
+    Function PrintPatternForLoop(N)
+        For I = 1 to N  // Loop for each line
+            For J = 1 to N - I  // Loop for leading spaces
+                Print "  "  // Print two spaces
+            End For
+            For K = 5 downto 6 - I  // Loop for numbers in descending order
+                Print K + " "  // Print number followed by a space
+            End For
+            Print NewLine  // Move to the next line
+        End For
+    End Function
+
+    Function TestPrintPatternForLoop()
+        Input N
+        Call PrintPatternForLoop(N)
+    End Function
+End
+17.Start
+    Function PrintPatternWhileLoop(N)
+        I = 1
+        While I <= N  // Loop for each line
+            J = 1
+            While J <= N - I  // Loop for leading spaces
+                Print "  "  // Print two spaces
+                J = J + 1
+            End While
+            K = 5
+            While K >= 6 - I  // Loop for numbers in descending order
+                Print K + " "  // Print number followed by a space
+                K = K - 1
+            End While
+            Print NewLine  // Move to the next line
+            I = I + 1
+        End While
+    End Function
+
+    Function TestPrintPatternWhileLoop()
+        Input N
+        Call PrintPatternWhileLoop(N)
+    End Function
+End
+18.Start
+    Function PrintPatternDoWhileLoop(N)
+        I = 1
+        Do
+            J = 1
+            Do
+                Print "  "  // Print two spaces
+                J = J + 1
+            While J <= N - I  // Loop for leading spaces
+            
+            K = 5
+            Do
+                Print K + " "  // Print number followed by a space
+                K = K - 1
+            While K >= 6 - I  // Loop for numbers in descending order
+            
+            Print NewLine  // Move to the next line
+            I = I + 1
+        While I <= N  // Loop for each line
+    End Function
+
+    Function TestPrintPatternDoWhileLoop()
+        Input N
+        Call PrintPatternDoWhileLoop(N)
+    End Function
+16.Start
+    Function PrintPatternForLoop(N)
+        For I = 1 to N  // Loop for each line
+            For J = 1 to N - I  // Loop for leading spaces
+                Print "  "  // Print two spaces
+            End For
+            For K = 5 downto 6 - I  // Loop for numbers in descending order
+                Print K + " "  // Print number followed by a space
+            End For
+            Print NewLine  // Move to the next line
+        End For
+    End Function
+
+    Function TestPrintPatternForLoop()
+        Input N
+        Call PrintPatternForLoop(N)
+    End Function
+End
+17.Start
+    Function PrintPatternWhileLoop(N)
+        I = 1
+        While I <= N  // Loop for each line
+            J = 1
+            While J <= N - I  // Loop for leading spaces
+                Print "  "  // Print two spaces
+                J = J + 1
+            End While
+            K = 5
+            While K >= 6 - I  // Loop for numbers in descending order
+                Print K + " "  // Print number followed by a space
+                K = K - 1
+            End While
+            Print NewLine  // Move to the next line
+            I = I + 1
+        End While
+    End Function
+
+    Function TestPrintPatternWhileLoop()
+        Input N
+        Call PrintPatternWhileLoop(N)
+    End Function
+End
+18.Start
+    Function PrintPatternDoWhileLoop(N)
+        I = 1
+        Do
+            J = 1
+            Do
+                Print "  "  // Print two spaces
+                J = J + 1
+            While J <= N - I  // Loop for leading spaces
+            
+            K = 5
+            Do
+                Print K + " "  // Print number followed by a space
+                K = K - 1
+            While K >= 6 - I  // Loop for numbers in descending order
+            
+            Print NewLine  // Move to the next line
+            I = I + 1
+        While I <= N  // Loop for each line
+    End Function
+
+    Function TestPrintPatternDoWhileLoop()
+        Input N
+        Call PrintPatternDoWhileLoop(N)
+    End Function
