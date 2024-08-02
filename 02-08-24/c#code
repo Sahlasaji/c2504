@@ -264,3 +264,246 @@ class Q03
         Console.ReadKey();
     }
 }
+8.using System;
+
+class Program
+{
+    static void PrintNumTriangleMirroredRightAngle(int N)
+    {
+        int I = 1;
+        while (I <= N)  // N times = Number of Lines
+        {
+            int J = 1;
+            // Number of Spaces before Number print
+            while (J <= N - I)
+            {
+                Console.Write("  ");  // Two Spaces, No Newline Printing
+                J++;
+            }
+            
+            J = 1;
+            // Number of Numbers is I times
+            while (J <= I)
+            {
+                Console.Write(J + " ");  // Print number and space, no new line
+                J++;
+            }
+            
+            Console.WriteLine();  // Move to the next line
+            I++;
+        }
+    }
+
+    static void TestPrintNumTriangleMirroredRightAngle()
+    {
+        Console.WriteLine("Enter the number of lines:");
+        int N = int.Parse(Console.ReadLine());
+        PrintNumTriangleMirroredRightAngle(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintNumTriangleMirroredRightAngle();
+    }
+}
+9.using System;
+
+class Program
+{
+    static void PrintNumTriangleMirroredRightAngle(int N)
+    {
+        int I = 1;
+        do
+        {
+            int J = 1;
+            // Number of Spaces before Number print
+            do
+            {
+                Console.Write("  ");  // Two Spaces, No Newline Printing
+                J++;
+            } while (J <= N - I);
+            
+            J = 1;
+            // Number of Numbers is I times
+            do
+            {
+                Console.Write(J + " ");  // Print number and space, no new line
+                J++;
+            } while (J <= I);
+            
+            Console.WriteLine();  // Move to the next line
+            I++;
+        } while (I <= N);
+    }
+
+    static void TestPrintNumTriangleMirroredRightAngle()
+    {
+        Console.WriteLine("Enter the number of lines:");
+        int N = int.Parse(Console.ReadLine());
+        PrintNumTriangleMirroredRightAngle(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintNumTriangleMirroredRightAngle();
+    }
+}
+10.using System;
+
+class Program
+{
+    static void PrintFibonacciForLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+
+        // Print the first two terms
+        Console.Write(term1 + " " + term2 + " ");
+
+        // Loop to calculate and print the next terms
+        for (int I = 3; I <= N; I++)
+        {
+            int nextTerm = term1 + term2;
+            Console.Write(nextTerm + " ");
+            term1 = term2;
+            term2 = nextTerm;
+        }
+        Console.WriteLine();
+    }
+
+    static void TestPrintFibonacciForLoop()
+    {
+        Console.WriteLine("Enter the number of terms:");
+        int N = int.Parse(Console.ReadLine());
+        PrintFibonacciForLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintFibonacciForLoop();
+    }
+}
+11.using System;
+
+class Program
+{
+    static void PrintFibonacciWhileLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+        int count = 2;
+
+        // Print the first two terms
+        Console.Write(term1 + " " + term2 + " ");
+
+        // Loop to calculate and print the next terms
+        while (count < N)
+        {
+            int nextTerm = term1 + term2;
+            Console.Write(nextTerm + " ");
+            term1 = term2;
+            term2 = nextTerm;
+            count++;
+        }
+        Console.WriteLine();
+    }
+
+    static void TestPrintFibonacciWhileLoop()
+    {
+        Console.WriteLine("Enter the number of terms:");
+        int N = int.Parse(Console.ReadLine());
+        PrintFibonacciWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintFibonacciWhileLoop();
+    }
+}
+12. using System;
+
+class Program
+{
+    static void PrintFibonacciDoWhileLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+        int count = 2;
+
+        // Print the first two terms
+        Console.Write(term1 + " " + term2 + " ");
+
+        // Loop to calculate and print the next terms
+        do
+        {
+            int nextTerm = term1 + term2;
+            Console.Write(nextTerm + " ");
+            term1 = term2;
+            term2 = nextTerm;
+            count++;
+        } while (count < N);
+        Console.WriteLine();
+    }
+
+    static void TestPrintFibonacciDoWhileLoop()
+    {
+        Console.WriteLine("Enter the number of terms:");
+        int N = int.Parse(Console.ReadLine());
+        PrintFibonacciDoWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintFibonacciDoWhileLoop();
+    }
+}
+13.using System;
+
+class Program
+{
+    static void PrintNthFibonacciForLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+        int nthTerm = 0;
+
+        // Handle edge cases for N = 1 and N = 2
+        if (N == 1)
+        {
+            Console.WriteLine(term1);
+            return;
+        }
+        else if (N == 2)
+        {
+            Console.WriteLine(term2);
+            return;
+        }
+
+        // Loop to calculate the nth term
+        for (int I = 3; I <= N; I++)
+        {
+            nthTerm = term1 + term2;
+            term1 = term2;
+            term2 = nthTerm;
+        }
+
+        // Print the nth term
+        Console.WriteLine(nthTerm);
+    }
+
+    static void TestPrintNthFibonacciForLoop()
+    {
+        Console.WriteLine("Enter the term number:");
+        int N = int.Parse(Console.ReadLine());
+        PrintNthFibonacciForLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintNthFibonacciForLoop();
+    }
+}
