@@ -507,3 +507,211 @@ class Program
         TestPrintNthFibonacciForLoop();
     }
 }
+14.using System;
+
+class Program
+{
+    static void PrintNthFibonacciWhileLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+        int nthTerm = 0;
+        int count = 3;
+
+        // Handle edge cases for N = 1 and N = 2
+        if (N == 1)
+        {
+            Console.WriteLine(term1);
+            return;
+        }
+        else if (N == 2)
+        {
+            Console.WriteLine(term2);
+            return;
+        }
+
+        // Loop to calculate the nth term
+        while (count <= N)
+        {
+            nthTerm = term1 + term2;
+            term1 = term2;
+            term2 = nthTerm;
+            count++;
+        }
+
+        // Print the nth term
+        Console.WriteLine(nthTerm);
+    }
+
+    static void TestPrintNthFibonacciWhileLoop()
+    {
+        Console.WriteLine("Enter the term number:");
+        int N = int.Parse(Console.ReadLine());
+        PrintNthFibonacciWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintNthFibonacciWhileLoop();
+    }
+}
+15.using System;
+
+class Program
+{
+    static void PrintNthFibonacciDoWhileLoop(int N)
+    {
+        // Initialize the first two terms
+        int term1 = 0;
+        int term2 = 1;
+        int nthTerm = 0;
+        int count = 3;
+
+        // Handle edge cases for N = 1 and N = 2
+        if (N == 1)
+        {
+            Console.WriteLine(term1);
+            return;
+        }
+        else if (N == 2)
+        {
+            Console.WriteLine(term2);
+            return;
+        }
+
+        // Loop to calculate the nth term
+        do
+        {
+            nthTerm = term1 + term2;
+            term1 = term2;
+            term2 = nthTerm;
+            count++;
+        } while (count <= N);
+
+        // Print the nth term
+        Console.WriteLine(nthTerm);
+    }
+
+    static void TestPrintNthFibonacciDoWhileLoop()
+    {
+        Console.WriteLine("Enter the term number:");
+        int N = int.Parse(Console.ReadLine());
+        PrintNthFibonacciDoWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintNthFibonacciDoWhileLoop();
+    }
+}
+16.using System;
+
+class Program
+{
+    static void PrintPatternForLoop(int N)
+    {
+        for (int I = 1; I <= N; I++)  // Loop for each line
+        {
+            for (int J = 1; J <= N - I; J++)  // Loop for leading spaces
+            {
+                Console.Write("  ");  // Print two spaces
+            }
+            for (int K = 5; K >= 6 - I; K--)  // Loop for numbers in descending order
+            {
+                Console.Write(K + " ");  // Print number followed by a space
+            }
+            Console.WriteLine();  // Move to the next line
+        }
+    }
+
+    static void TestPrintPatternForLoop()
+    {
+        Console.WriteLine("Enter the number of lines:");
+        int N = int.Parse(Console.ReadLine());
+        PrintPatternForLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintPatternForLoop();
+    }
+}
+17.using System;
+
+class Program
+{
+    static void PrintPatternWhileLoop(int N)
+    {
+        int I = 1;
+        while (I <= N)  // Loop for each line
+        {
+            int J = 1;
+            while (J <= N - I)  // Loop for leading spaces
+            {
+                Console.Write("  ");  // Print two spaces
+                J++;
+            }
+            int K = 5;
+            while (K >= 6 - I)  // Loop for numbers in descending order
+            {
+                Console.Write(K + " ");  // Print number followed by a space
+                K--;
+            }
+            Console.WriteLine();  // Move to the next line
+            I++;
+        }
+    }
+
+    static void TestPrintPatternWhileLoop()
+    {
+        Console.WriteLine("Enter the number of lines:");
+        int N = int.Parse(Console.ReadLine());
+        PrintPatternWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintPatternWhileLoop();
+    }
+}
+18.using System;
+
+class Program
+{
+    static void PrintPatternDoWhileLoop(int N)
+    {
+        int I = 1;
+        do
+        {
+            int J = 1;
+            do
+            {
+                Console.Write("  ");  // Print two spaces
+                J++;
+            } while (J <= N - I);  // Loop for leading spaces
+
+            int K = 5;
+            do
+            {
+                Console.Write(K + " ");  // Print number followed by a space
+                K--;
+            } while (K >= 6 - I);  // Loop for numbers in descending order
+
+            Console.WriteLine();  // Move to the next line
+            I++;
+        } while (I <= N);  // Loop for each line
+    }
+
+    static void TestPrintPatternDoWhileLoop()
+    {
+        Console.WriteLine("Enter the number of lines:");
+        int N = int.Parse(Console.ReadLine());
+        PrintPatternDoWhileLoop(N);
+    }
+
+    static void Main(string[] args)
+    {
+        TestPrintPatternDoWhileLoop();
+    }
+}
