@@ -317,13 +317,233 @@ function PrintNumTriangleMirroredRightAngle(N) = 5
 function TestPrintNumTriangleMirroredRightAngle()
     Input N 
     PrintNumTriangleMirroredRightAngle(N)
-----cs----
+8. Start
+    Function PrintNumTriangleMirroredRightAngle(N)
+        I = 1
+        While I <= N  // N times = Number of Lines
+            J = 1
+            // Number of Spaces before Number print
+            While J <= N - I
+                Print "  "  // Two Spaces, No Newline Printing
+                J = J + 1
+            End While
+            
+            J = 1
+            // Number of Numbers is I times
+            While J <= I
+                Print J + " "  // Print number and space, no new line
+                J = J + 1
+            End While
+            
+            Print NewLine  // Move to the next line
+            I = I + 1
+        End While
+    End Function
 
-Line No = I               5-I I  
-1        ########1#    8#=4##,1num  = 1#      (N-I)##,I nums 
-2        ######1#2#    6#=3##,2nums = 1#2#    (N-I)##,I nums
-3        ####1#2#3#    4#=2##,3nums = 1#2#3#  (N-I)##,I nums
-4        ##1#2#3#4#    2#=1##,4nums = 1#2#3#4#  (N-I)##,I nums
-5        1#2#3#4#5#    0#=0##,5nums = 1#2#3#4#5# (N-I)##,I nums
+    Function TestPrintNumTriangleMirroredRightAngle()
+        Input N
+        Call PrintNumTriangleMirroredRightAngle(N)
+    End Function
+End
 
-how many line
+9. Function PrintNumTriangleMirroredRightAngle(N)
+        I = 1
+        Do
+            J = 1
+            // Number of Spaces before Number print
+            Do
+                Print "  "  // Two Spaces, No Newline Printing
+                J = J + 1
+            While J <= N - I
+            
+            J = 1
+            // Number of Numbers is I times
+            Do
+                Print J + " "  // Print number and space, no new line
+                J = J + 1
+            While J <= I
+            
+            Print NewLine  // Move to the next line
+            I = I + 1
+        While I <= N
+    End Function
+
+    Function TestPrintNumTriangleMirroredRightAngle()
+        Input N
+        Call PrintNumTriangleMirroredRightAngle(N)
+    End Function
+End
+10.Start
+    Function PrintFibonacciForLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+
+        // Print the first two terms
+        Print term1
+        Print term2
+
+        // Loop to calculate and print the next terms
+        For I = 3 to N
+            int nextTerm = term1 + term2
+            Print nextTerm
+            term1 = term2
+            term2 = nextTerm
+        End For
+    End Function
+
+    Function TestPrintFibonacciForLoop()
+        Input N
+        Call PrintFibonacciForLoop(N)
+    End Function
+End
+11.Start
+    Function PrintFibonacciWhileLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+        int count = 2
+
+        // Print the first two terms
+        Print term1
+        Print term2
+
+        // Loop to calculate and print the next terms
+        While count < N
+            int nextTerm = term1 + term2
+            Print nextTerm
+            term1 = term2
+            term2 = nextTerm
+            count = count + 1
+        End While
+    End Function
+
+    Function TestPrintFibonacciWhileLoop()
+        Input N
+        Call PrintFibonacciWhileLoop(N)
+    End Function
+End
+12. Start
+    Function PrintFibonacciDoWhileLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+        int count = 2
+
+        // Print the first two terms
+        Print term1
+        Print term2
+
+        // Loop to calculate and print the next terms
+        Do
+            int nextTerm = term1 + term2
+            Print nextTerm
+            term1 = term2
+            term2 = nextTerm
+            count = count + 1
+        While count < N
+    End Function
+
+    Function TestPrintFibonacciDoWhileLoop()
+        Input N
+        Call PrintFibonacciDoWhileLoop(N)
+    End Function
+End
+13. Start
+    Function PrintNthFibonacciForLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+        int nthTerm = 0
+
+        // Handle edge cases for N = 1 and N = 2
+        If N == 1
+            Print term1
+            Return
+        Else If N == 2
+            Print term2
+            Return
+
+        // Loop to calculate the nth term
+        For I = 3 to N
+            nthTerm = term1 + term2
+            term1 = term2
+            term2 = nthTerm
+        End For
+
+        // Print the nth term
+        Print nthTerm
+    End Function
+
+    Function TestPrintNthFibonacciForLoop()
+        Input N
+        Call PrintNthFibonacciForLoop(N)
+    End Function
+End
+14.pseudo
+ Start
+    Function PrintNthFibonacciWhileLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+        int nthTerm = 0
+        int count = 3
+
+        // Handle edge cases for N = 1 and N = 2
+        If N == 1
+            Print term1
+            Return
+        Else If N == 2
+            Print term2
+            Return
+
+        // Loop to calculate the nth term
+        While count <= N
+            nthTerm = term1 + term2
+            term1 = term2
+            term2 = nthTerm
+            count = count + 1
+        End While
+
+        // Print the nth term
+        Print nthTerm
+    End Function
+
+    Function TestPrintNthFibonacciWhileLoop()
+        Input N
+        Call PrintNthFibonacciWhileLoop(N)
+    End Function
+End
+15.Start
+    Function PrintNthFibonacciDoWhileLoop(N)
+        // Initialize the first two terms
+        int term1 = 0
+        int term2 = 1
+        int nthTerm = 0
+        int count = 3
+
+        // Handle edge cases for N = 1 and N = 2
+        If N == 1
+            Print term1
+            Return
+        Else If N == 2
+            Print term2
+            Return
+
+        // Loop to calculate the nth term
+        Do
+            nthTerm = term1 + term2
+            term1 = term2
+            term2 = nthTerm
+            count = count + 1
+        While count <= N
+
+        // Print the nth term
+        Print nthTerm
+    End Function
+
+    Function TestPrintNthFibonacciDoWhileLoop()
+        Input N
+        Call PrintNthFibonacciDoWhileLoop(N)
+    End Function
+End
