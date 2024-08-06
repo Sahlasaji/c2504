@@ -1,0 +1,67 @@
+create database student_db;
+use student_db;
+if not exists (select * from sys.tables where [name] = 'student')
+begin
+create table student (
+id int primary key identity,
+first_name nvarchar(50) not null,
+last_name nvarchar(50) not null,
+email nvarchar(100) not null unique,
+);
+end
+
+select OBJECT_ID ('dbo.student')
+
+if OBJECT_ID('dbo.subject') is null
+begin
+  create table subjects(
+    id int primary key identity,
+    [name] nvarchar(100) not null unique,
+  )
+end
+
+if OBJECT_ID('dbo.mark') is null
+begin
+  create table mark(
+    id int primary key identity,
+    student_id int not null,
+    subject_id int not null,
+    mark int not null,
+    constraint fk_student foreign key (student_id) references student(id),
+    constraint fk_subject foreign key (subject_id) references subjects(id),
+  );
+end
+
+insert into student ( first_name, last_name, email)
+values
+('john', 'deo', 'johndoe@gmail.com'),
+('jane', 'smith', 'jjanesmith@gmail.com'),
+('michael', 'brown', 'michaelbrown@gmail.com');
+
+insert into subjects ( name)
+values
+('chemistry'),
+('math'),
+('computer science');
+
+insert into mark (student_id, subject_id, mark)
+values
+('1','1','80'),
+('1','2','90'),
+('1','3','86'),
+('2','1','55'),
+('2','3','75'),
+('2','3','25'),
+('3','1','80'),
+('3','2','60'),
+('3','3','34');
+
+select * from mark where student_id=(select id from student where email='johndoe@gmail.com');
+
+select student.id as student_id, mark.id as mark_id, student.first_name, student.last_name, mark.mark, mark.subject_id from student
+inner join mark
+on student.id = mark.student_id;
+
+select student.id as student_id, mark.id as mark_id, student.first_name, student.last_name, mark.mark, mark.subject_id , subjects.name from student
+inner join mark on student.id = mark.student_id
+inner join subjects on mark.subject_id= subjects.id;
