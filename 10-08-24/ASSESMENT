@@ -1,0 +1,90 @@
+1.Find the Day with the Highest Sales
+Problem: Given a `Sales` table
+with columns `SaleAmount` and `SaleDate`,
+find the day with the highest total sales.
+
+SELECT SaleDate,SUM(SaleAmount) as TOTALSales
+FROM Sales
+GROUP BY SaleDate
+HAVING   SUM(SaleAmount) = ( SELECT MAX(TotalSales)
+        FROM (
+            SELECT   SaleDate,  SUM(SaleAmount) AS TotalSales
+            FROM Sales
+            GROUP BY  SaleDate  ) AS SalesTotals
+       );
+
+       
+ 2.Find Employees Who Report to More Than One Manager
+Problem: Given an `Employees` table
+with columns `EmployeeID`, `Name`, and `ManagerID`,
+find employees who report to more than one manager.
+SELECT 
+    EmployeeID, 
+    Name, 
+    COUNT(DISTINCT ManagerID) AS NumberOfManagers
+FROM 
+    Employees
+GROUP BY 
+    EmployeeID, 
+    Name
+HAVING 
+    COUNT(DISTINCT ManagerID) > 1;
+
+3.Find Customers with Multiple Orders
+Problem: Given a `Customers` table and an `Orders` table
+where `Orders` contains a `CustomerID`,
+find customers who have placed more than one order.
+
+Table Structure:
+```
+CREATE TABLE Customers (
+CustomerID INT,
+Name VARCHAR(100)
+);
+
+CREATE TABLE Orders (
+OrderID INT,
+CustomerID INT,
+OrderDate DATE
+);
+
+
+SELECT CustomerID,Name
+FROM Customers
+WHERE CustomerID IN( SELECT CustomerID
+FROM Orders
+GROUP BY CustomerID
+HAVING COUNT(OrderID)>1);
+
+
+4.Find the Most Recent Order for Each Customer
+Problem: Given an `Orders` table
+with columns `OrderID`, `CustomerID`, and `OrderDate`,
+find the most recent order date for each customer.
+
+Table Structure:
+```
+CREATE TABLE Orders (
+OrderID INT,
+CustomerID INT,
+OrderDate DATE
+);
+
+SELECT CustomerID, MAX(OrderDate) AS MostRecentOrderDate
+FROM Orders
+GROUP BY CustomerID;
+
+
+5.Find the Monthly Average Sales for Each Salesperson
+Problem: Given a `Sales` table
+with columns `SalesPersonID`, `SaleAmount`, and `SaleDate`,
+find the monthly average sales for each salesperson.
+
+SELECT SalesPersonID,YEAR(SaleDate) AS SalesYear, MONTH(SaleDate) AS SalesMonth,AVG(MonthlyTotal) AS MonthlyAverageSales
+FROM (SELECT SalesPersonID, YEAR(SaleDate) AS SalesYear, MONTH(SaleDate) AS SalesMonth,SUM(SaleAmount) AS MonthlyTotal
+FROM Sales
+GROUP BY SalesPersonID,YEAR(SaleDate),MONTH(SaleDate) AS MonthlySales
+GROUP BY 
+SalesPersonID,
+    SalesYear,
+    SalesMonth;
