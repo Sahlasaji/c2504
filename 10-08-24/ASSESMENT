@@ -83,7 +83,7 @@ find the monthly average sales for each salesperson.
 SELECT SalesPersonID,YEAR(SaleDate) AS SalesYear, MONTH(SaleDate) AS SalesMonth,AVG(MonthlyTotal) AS MonthlyAverageSales
 FROM (SELECT SalesPersonID, YEAR(SaleDate) AS SalesYear, MONTH(SaleDate) AS SalesMonth,SUM(SaleAmount) AS MonthlyTotal
 FROM Sales
-GROUP BY SalesPersonID,YEAR(SaleDate),MONTH(SaleDate) AS MonthlySales
+GROUP BY SalesPersonID,YEAR(SaleDate),MONTH(SaleDate)) AS MonthlySales
 GROUP BY 
 SalesPersonID,
     SalesYear,
