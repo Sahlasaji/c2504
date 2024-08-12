@@ -1,0 +1,180 @@
+class YahkoopV2
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("-----TestReadDoctorSalaryTillMinus1-----");
+            TestReadDoctorSalaryTillMinus1();
+            Console.WriteLine("-----End TestReadDoctorSalaryTillMinus1-----");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        static void ReadDoctorSalaryTillMinus1()
+        {
+            int[] salaries = new int[100]; // Assuming a max of 100 salaries to store.
+            int count = 0;
+
+            Console.WriteLine("Enter doctors' salaries (enter -1 to stop):");
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int salary))
+                {
+                    if (salary == -1)
+                    {
+                        break;
+                    }
+
+                    if (salary < 0)
+                    {
+                        Console.WriteLine("Invalid salary");
+                        continue;
+                    }
+
+                    if (count >= salaries.Length)
+                    {
+                        Console.WriteLine("Maximum salary limit reached. Can't accept more inputs.");
+                        break;
+                    }
+
+                    salaries[count++] = salary;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter an integer salary.");
+                }
+            }
+
+            if (count > 0)
+            {
+                int[] actualSalaries = new int[count];
+                Array.Copy(salaries, actualSalaries, count);
+
+                int averageSalary = CalculateAverageSalary(actualSalaries);
+                int primeSalariesCount = CountPrimeSalaries(actualSalaries);
+                int minFourDigitSalariesCount = CountMinFourDigitSalaries(actualSalaries);
+                int maxSalary = MaxSalary(actualSalaries);
+                int oddSalariesSum = CalculateOddSalariesSum(actualSalaries);
+                int secondMinOddSalary = FindSecondMinOddSalary(actualSalaries);
+                bool isMaxSalaryPrime = IsPrime(maxSalary);
+
+                Console.WriteLine($"Average Salary: {averageSalary}");
+                Console.WriteLine($"Prime Salaries Count: {primeSalariesCount}");
+                Console.WriteLine($"Minimum Four Digits Salaries Count: {minFourDigitSalariesCount}");
+                Console.WriteLine($"Maximum Salary: {maxSalary}");
+                Console.WriteLine($"Odd Salaries Sum: {oddSalariesSum}");
+                Console.WriteLine($"Second Minimum Odd Salary: {(secondMinOddSalary == int.MaxValue ? "Does not exist" : secondMinOddSalary.ToString())}");
+                Console.WriteLine(isMaxSalaryPrime ? "Maximum salary is also prime" : "Maximum salary is not prime");
+            }
+            else
+            {
+                Console.WriteLine("No salaries were entered.");
+            }
+        }
+
+        static int CalculateAverageSalary(int[] salaries)
+        {
+            int sum = 0;
+            foreach (int salary in salaries)
+            {
+                sum += salary;
+            }
+            return sum / salaries.Length;
+        }
+
+        static int CountPrimeSalaries(int[] salaries)
+        {
+            int count = 0;
+            foreach (int salary in salaries)
+            {
+                if (IsPrime(salary))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        static int CountMinFourDigitSalaries(int[] salaries)
+        {
+            int count = 0;
+            foreach (int salary in salaries)
+            {
+                if (salary >= 1000)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        static int MaxSalary(int[] salaries)
+        {
+            int max = int.MinValue;
+            foreach (int salary in salaries)
+            {
+                if (salary > max)
+                {
+                    max = salary;
+                }
+            }
+            return max;
+        }
+
+        static int CalculateOddSalariesSum(int[] salaries)
+        {
+            int sum = 0;
+            foreach (int salary in salaries)
+            {
+                if (IsOdd(salary))
+                {
+                    sum += salary;
+                }
+            }
+            return sum;
+        }
+
+        static int FindSecondMinOddSalary(int[] salaries)
+        {
+            int minOdd = int.MaxValue, secondMinOdd = int.MaxValue;
+            foreach (int salary in salaries)
+            {
+                if (IsOdd(salary))
+                {
+                    if (salary < minOdd)
+                    {
+                        secondMinOdd = minOdd;
+                        minOdd = salary;
+                    }
+                    else if (salary < secondMinOdd && salary != minOdd)
+                    {
+                        secondMinOdd = salary;
+                    }
+                }
+            }
+            return secondMinOdd;
+        }
+
+        static bool IsPrime(int number)
+        {
+            if (number < 2)
+                return false;
+
+            int sqrt = (int)Math.Sqrt(number);
+            for (int i = 2; i <= sqrt; i++)
+            {
+                if (number % i == 0)
+                    return false;
+            }
+            return true;
+        }
+
+        static bool IsOdd(int number)
+        {
+            return number % 2 != 0;
+        }
+
+        static void TestReadDoctorSalaryTillMinus1()
+        {
+            ReadDoctorSalaryTillMinus1();
+        }
+    }
