@@ -1,0 +1,184 @@
+class Anurag
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("-----TestReadPatientTemperatureTillZero-----");
+            TestReadPatientTemperatureTillZero();
+            Console.WriteLine("-----End TestReadPatientTemperatureTillZero-----");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        static void ReadPatientTemperatureTillZero()
+        {
+            int[] temperatures = new int[100]; // Assuming a maximum of 100 temperatures to store
+            int count = 0;
+
+            Console.WriteLine("Enter patient temperatures (enter 0 to stop):");
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int temperature))
+                {
+                    if (temperature == 0) // Stop input condition
+                    {
+                        break;
+                    }
+                    if (temperature < 0) // Validation
+                    {
+                        Console.WriteLine("Invalid temperature");
+                        continue;
+                    }
+
+                    if (count >= temperatures.Length)
+                    {
+                        Console.WriteLine("Maximum temperature limit reached. Can't accept more inputs.");
+                        break;
+                    }
+
+                    temperatures[count++] = temperature;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter an integer temperature.");
+                }
+            }
+
+            if (count > 0)
+            {
+                int[] actualTemperatures = new int[count];
+                Array.Copy(temperatures, actualTemperatures, count);
+
+                int averageTemperature = CalculateAverageTemperature(actualTemperatures);
+                int primeTemperaturesSum = CalculatePrimeTemperaturesSum(actualTemperatures);
+                int min3DigitsTemperatureSum = CalculateMin3DigitsTemperatureSum(actualTemperatures);
+                int minTemperature = FindMinTemperature(actualTemperatures);
+                int oddTemperaturesSum = CalculateOddTemperaturesSum(actualTemperatures);
+                int secondMaxOddTemperature = FindSecondMaxOddTemperature(actualTemperatures);
+                bool isMinTemperaturePrime = IsPrime(minTemperature);
+
+                Console.WriteLine($"Average Temperature: {averageTemperature}");
+                Console.WriteLine($"Prime Temperatures Sum: {primeTemperaturesSum}");
+                Console.WriteLine($"Minimum 3-Digit Temperature Sum: {min3DigitsTemperatureSum}");
+                Console.WriteLine($"Min Temperature: {minTemperature}");
+                Console.WriteLine($"Odd Temperatures Sum: {oddTemperaturesSum}");
+                Console.WriteLine(secondMaxOddTemperature == int.MinValue
+                    ? "Second Max Odd Temperature does not exist"
+                    : $"Second Max Odd Temperature: {secondMaxOddTemperature}");
+                Console.WriteLine(isMinTemperaturePrime
+                    ? "Minimum temperature is also prime"
+                    : "Minimum temperature is not prime");
+            }
+            else
+            {
+                Console.WriteLine("No temperatures were entered.");
+            }
+        }
+
+        static int CalculateAverageTemperature(int[] temperatures)
+        {
+            int sum = 0;
+            foreach (int temp in temperatures)
+            {
+                sum += temp;
+            }
+            return sum / temperatures.Length;
+        }
+
+        static int CalculatePrimeTemperaturesSum(int[] temperatures)
+        {
+            int sum = 0;
+            foreach (int temp in temperatures)
+            {
+                if (IsPrime(temp))
+                {
+                    sum += temp;
+                }
+            }
+            return sum;
+        }
+
+        static int CalculateMin3DigitsTemperatureSum(int[] temperatures)
+        {
+            int sum = 0;
+            foreach (int temp in temperatures)
+            {
+                if (temp >= 100)
+                {
+                    sum += temp;
+                }
+            }
+            return sum;
+        }
+
+        static int FindMinTemperature(int[] temperatures)
+        {
+            int min = int.MaxValue;
+            foreach (int temp in temperatures)
+            {
+                if (temp < min)
+                {
+                    min = temp;
+                }
+            }
+            return min;
+        }
+
+        static int CalculateOddTemperaturesSum(int[] temperatures)
+        {
+            int sum = 0;
+            foreach (int temp in temperatures)
+            {
+                if (IsOdd(temp))
+                {
+                    sum += temp;
+                }
+            }
+            return sum;
+        }
+
+        static int FindSecondMaxOddTemperature(int[] temperatures)
+        {
+            int maxOdd = int.MinValue;
+            int secondMaxOdd = int.MinValue;
+            foreach (int temp in temperatures)
+            {
+                if (IsOdd(temp))
+                {
+                    if (temp > maxOdd)
+                    {
+                        secondMaxOdd = maxOdd;
+                        maxOdd = temp;
+                    }
+                    else if (temp > secondMaxOdd && temp != maxOdd)
+                    {
+                        secondMaxOdd = temp;
+                    }
+                }
+            }
+            return secondMaxOdd;
+        }
+
+        static bool IsPrime(int number)
+        {
+            if (number < 2)
+                return false;
+
+            int sqrt = (int)Math.Sqrt(number);
+            for (int i = 2; i <= sqrt; i++)
+            {
+                if (number % i == 0)
+                    return false;
+            }
+            return true;
+        }
+
+        static bool IsOdd(int number)
+        {
+            return number % 2 != 0;
+        }
+
+        static void TestReadPatientTemperatureTillZero()
+        {
+            ReadPatientTemperatureTillZero();
+        }
+    }
