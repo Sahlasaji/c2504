@@ -1,0 +1,195 @@
+class Minnu
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("-----TestReadPatientAgeTillBelowZero-----");
+            TestReadPatientAgeTillBelowZero();
+            Console.WriteLine("-----End TestReadPatientAgeTillBelowZero-----");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        static void ReadPatientAgeTillBelowZero()
+        {
+            int[] ages = new int[100]; // Assuming a maximum of 100 ages to store.
+            int count = 0;
+
+            Console.WriteLine("Enter patient ages (enter a negative number to stop):");
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int age))
+                {
+                    if (age < 0)
+                    {
+                        break;
+                    }
+
+                    if (age == 0)
+                    {
+                        Console.WriteLine("Invalid age");
+                        continue;
+                    }
+
+                    if (count >= ages.Length)
+                    {
+                        Console.WriteLine("Maximum age limit reached. Can't accept more inputs.");
+                        break;
+                    }
+
+                    ages[count++] = age;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter an integer age.");
+                }
+            }
+
+            if (count > 0)
+            {
+                int[] actualAges = new int[count];
+                Array.Copy(ages, actualAges, count);
+
+                int averageAge = CalculateAverageAge(actualAges);
+                int primeAgesSum = CalculatePrimeAgesSum(actualAges);
+                int teenagerAgesSum = CalculateTeenagerAgesSum(actualAges);
+                int minAge = FindMinAge(actualAges);
+                int oddAgesSum = CalculateOddAgesSum(actualAges);
+                int secondMaxAdultAge = FindSecondMaxAdultAge(actualAges);
+                bool isMinAgePrime = IsPrime(minAge);
+
+                Console.WriteLine($"Average Age: {averageAge}");
+                Console.WriteLine($"Prime Ages Sum: {primeAgesSum}");
+                Console.WriteLine($"Teenagers' Age Sum: {teenagerAgesSum}");
+                Console.WriteLine($"Min Age: {minAge}");
+                Console.WriteLine($"Odd Ages Sum: {oddAgesSum}");
+                Console.WriteLine(secondMaxAdultAge == int.MinValue 
+                    ? "Second Max Adult Age does not exist" 
+                    : $"Second Max Adult Age: {secondMaxAdultAge}");
+                Console.WriteLine(isMinAgePrime 
+                    ? "Minimum age is also prime" 
+                    : "Minimum age is not prime");
+            }
+            else
+            {
+                Console.WriteLine("No ages were entered.");
+            }
+        }
+
+        static int CalculateAverageAge(int[] ages)
+        {
+            int sum = 0;
+            foreach (int age in ages)
+            {
+                sum += age;
+            }
+            return sum / ages.Length;
+        }
+
+        static int CalculatePrimeAgesSum(int[] ages)
+        {
+            int sum = 0;
+            foreach (int age in ages)
+            {
+                if (IsPrime(age))
+                {
+                    sum += age;
+                }
+            }
+            return sum;
+        }
+
+        static int CalculateTeenagerAgesSum(int[] ages)
+        {
+            int sum = 0;
+            foreach (int age in ages)
+            {
+                if (IsTeenager(age))
+                {
+                    sum += age;
+                }
+            }
+            return sum;
+        }
+
+        static int FindMinAge(int[] ages)
+        {
+            int min = int.MaxValue;
+            foreach (int age in ages)
+            {
+                if (age < min)
+                {
+                    min = age;
+                }
+            }
+            return min;
+        }
+
+        static int CalculateOddAgesSum(int[] ages)
+        {
+            int sum = 0;
+            foreach (int age in ages)
+            {
+                if (IsOdd(age))
+                {
+                    sum += age;
+                }
+            }
+            return sum;
+        }
+
+        static int FindSecondMaxAdultAge(int[] ages)
+        {
+            int maxAdult = int.MinValue;
+            int secondMaxAdult = int.MinValue;
+            foreach (int age in ages)
+            {
+                if (IsAdult(age))
+                {
+                    if (age > maxAdult)
+                    {
+                        secondMaxAdult = maxAdult;
+                        maxAdult = age;
+                    }
+                    else if (age > secondMaxAdult && age != maxAdult)
+                    {
+                        secondMaxAdult = age;
+                    }
+                }
+            }
+            return secondMaxAdult;
+        }
+
+        static bool IsPrime(int number)
+        {
+            if (number < 2)
+                return false;
+
+            int sqrt = (int)Math.Sqrt(number);
+            for (int i = 2; i <= sqrt; i++)
+            {
+                if (number % i == 0)
+                    return false;
+            }
+            return true;
+        }
+
+        static bool IsTeenager(int age)
+        {
+            return age >= 13 && age <= 19;
+        }
+
+        static bool IsAdult(int age)
+        {
+            return age > 19;
+        }
+
+        static bool IsOdd(int number)
+        {
+            return number % 2 != 0;
+        }
+
+        static void TestReadPatientAgeTillBelowZero()
+        {
+            ReadPatientAgeTillBelowZero();
+        }
+    
