@@ -1,0 +1,89 @@
+using System;
+
+namespace csharp
+{
+    class Account
+    {
+        public string Number { get; private set; } // Encapsulate the account number
+        private float balance;
+        public float Balance
+        {
+            get { return balance; }
+            private set
+            {
+                if (value < 0)
+                {
+                    Console.WriteLine("Balance cannot be negative. Operation canceled.");
+                    return;
+                }
+                if (value > 5000000)
+                {
+                    Console.WriteLine("Balance cannot be greater than 5000000. Operation canceled.");
+                    return;
+                }
+                balance = value;
+            }
+        }
+
+        public Account(string _number)
+        {
+            Number = _number;
+            Balance = 0;
+        }
+
+        public void Deposit(float amount)
+        {
+            if (amount > 500000)
+            {
+                Console.WriteLine("Cannot deposit more than 500,000 at once.");
+            }
+            else if (amount <= 0)
+            {
+                Console.WriteLine("Deposit amount must be positive.");
+            }
+            else
+            {
+                Balance += amount;
+                Console.WriteLine($"{amount} deposited. New balance: {Balance}");
+            }
+        }
+
+        public void Withdraw(float amount)
+        {
+            if (amount <= 0)
+            {
+                Console.WriteLine("Withdrawal amount must be positive.");
+            }
+            else if (amount > Balance)
+            {
+                Console.WriteLine("Insufficient balance. Withdrawal canceled.");
+            }
+            else
+            {
+                Balance -= amount;
+                Console.WriteLine($"{amount} withdrawn. New balance: {Balance}");
+            }
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Account Sahla = new Account("1233445566778");
+            Sahla.Deposit(500000);  // Valid deposit
+            Sahla.Deposit(200000);  // Valid deposit
+            Sahla.Withdraw(75000);  // Valid withdrawal
+            Console.WriteLine($"Sahla's account balance is {Sahla.Balance}");
+
+            Sahla.Withdraw(700000); // Should fail due to insufficient funds
+            Sahla.Withdraw(625000); // Should fail due to insufficient funds
+
+            Sahla.Deposit(1000001); // Should fail due to deposit limit
+            Sahla.Deposit(10000); // Valid deposit
+            //Sahla.Balance = 45;   error
+            Console.WriteLine($"Sahla's final account balance is {Sahla.Balance}");
+            Console.ReadKey();
+        }
+    }
+}
