@@ -1,0 +1,49 @@
+class Calculator
+{
+    private double number1;
+    private double number2;
+
+    public Calculator(double num1, double num2)
+    {
+        number1 = num1;
+        number2 = num2;
+    }
+
+    public double Add()
+    {
+        return number1 + number2;
+    }
+
+    public double Subtract()
+    {
+        return number1 - number2;
+    }
+
+    public double Multiply()
+    {
+        return number1 * number2;
+    }
+
+    public double Divide()
+    {
+        if (number2 == 0)
+        {
+            Console.WriteLine("Error: Division by zero is not allowed.");
+            return double.NaN; 
+        }
+        return number1 / number2;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Calculator calc = new Calculator(10, 5);
+
+        Console.WriteLine("Addition: " + calc.Add());
+        Console.WriteLine("Subtraction: " + calc.Subtract());
+        Console.WriteLine("Multiplication: " + calc.Multiply());
+        Console.WriteLine("Division: " + calc.Divide());
+    }
+}
