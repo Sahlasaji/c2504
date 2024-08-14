@@ -1,0 +1,42 @@
+using System;
+
+public class CricketGround
+{
+    public int LegSideDistance { get; set; }
+    public int OffSideDistance { get; set; }
+    public int StraightDistance { get; set; }
+    public int ThirdManDistance { get; set; }
+
+    // Find the shortest distance among the four distances
+    public int FindShortestDistance()
+    {
+        return Math.Min(Math.Min(LegSideDistance, OffSideDistance), Math.Min(StraightDistance, ThirdManDistance));
+    }
+
+    // Compare if the shortest distance of the current ground is greater than another ground
+    public bool IsShortestDistanceGt(CricketGround other)
+    {
+        return FindShortestDistance() > other.FindShortestDistance();
+    }
+}
+
+public class UserOfCricketGround
+{
+    public static void CompareGrounds(CricketGround ground1, CricketGround ground2)
+    {
+        int shortestGround1 = ground1.FindShortestDistance();
+        int shortestGround2 = ground2.FindShortestDistance();
+
+        Console.WriteLine("Shortest distance for Ground 1: " + shortestGround1);
+        Console.WriteLine("Shortest distance for Ground 2: " + shortestGround2);
+
+        if (ground1.IsShortestDistanceGt(ground2))
+        {
+            Console.WriteLine("Ground 1 is preferred for batsman.");
+        }
+        else
+        {
+            Console.WriteLine("Ground 2 is preferred for batsman.");
+        }
+    }
+}
