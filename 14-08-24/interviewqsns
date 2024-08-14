@@ -1,0 +1,124 @@
+1.1. how do you create the connection object?
+
+       The SqlConnection object is used to establish a connection to a SQL Server database.
+         using (SqlConnection conn = new SqlConnection(connectionString))
+
+
+2.how do you create the command object?
+
+      SqlCommand cmd = new SqlCommand(query, conn);
+
+3. how do you write the parameterizied sql statement or query?
+
+      string query = "INSERT INTO Trainers (Name, Place, Skill) VALUES (@Name, @Place, @Skill)";
+
+      
+4. how will you pass the value to the query?
+
+        cmd.Parameters.AddWithValue("@Name", trainer.name);
+        cmd.Parameters.AddWithValue("@Place", trainer.place);
+        cmd.Parameters.AddWithValue("@Skill", trainer.skill);
+
+5.how will you establish the connection to database?
+
+    You establish the connection to the database by calling the Open() method on the SqlConnection object.
+    conn.Open();
+
+6.how will you run the query?
+
+    You run the query by calling methods like ExecuteNonQuery,
+    cmd.ExecuteNonQuery();
+
+*/
+public void Create(Trainer trainer)
+{
+    using (SqlConnection conn = new SqlConnection(connectionString))
+    {
+        string query = "INSERT INTO Trainers (Name, Place, Skill) VALUES (@Name, @Place, @Skill)";
+        SqlCommand cmd = new SqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@Name", trainer.name);
+        cmd.Parameters.AddWithValue("@Place", trainer.place);
+        cmd.Parameters.AddWithValue("@Skill", trainer.skill);
+
+        conn.Open();
+        cmd.ExecuteNonQuery();
+    }
+}
+
+
+ /*
+1.how do you create the connection object?
+
+    using (SqlConnection conn = new SqlConnection(connectionString))
+
+2.how do you create the command object?
+
+   SqlCommand cmd = new SqlCommand(query, conn);
+
+
+    
+3.how do you write the parameterizied sql statement or query?
+
+  string query = "SELECT Id, Name, Place, Skill FROM Trainers WHERE Id = @Id";
+
+
+
+4.how will you pass the value to the query?
+
+  cmd.Parameters.AddWithValue("@Id", id);
+
+  
+5.how will you establish the connection to database?
+          conn.Open();
+
+6.how will you run the query?
+
+  cmd.ExecuteNonQuery();
+
+7.what is reader object?
+
+   The SqlDataReader object is used to read data from the database row by row in a forward-only, read-only manner.
+    SqlDataReader reader = cmd.ExecuteReader();
+--------------------------------------------------------------------------------------------------
+8.how will you read a row or row-by-row many rows using reader object?
+
+  The SqlDataReader reads rows using the Read() method. 
+  if (reader.Read())
+  {
+      // Read a single row
+  }
+--------------------------------------------------------------------------------------------------
+
+9.what is job of the reader.Read() function?
+
+   The Read() method advances the SqlDataReader to the next record. It returns true if there are more rows, and false when there are no more rows.
+---------------------------------------------------------------------------------------------------
+10. how do you use the reader object after Read() function?
+
+  After calling Read(), you can access the data in the current row using indexers or column names.
+  int id = (int)reader["Id"];
+  string name = reader["Name"].ToString();
+  string place = reader["Place"].ToString();
+  string skill = reader["Skill"].ToString();
+
+
+*/
+public Trainer Read(int id)
+{
+    Trainer trainer = null;
+    using (SqlConnection conn = new SqlConnection(connectionString))
+    {
+        string query = "SELECT Id, Name, Place, Skill FROM Trainers WHERE Id = @Id";
+        SqlCommand cmd = new SqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@Id", id);
+
+        conn.Open();
+        SqlDataReader reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            trainer = new Trainer((int)reader["Id"], reader["Name"].ToString(), reader["Skill"].ToString(),
+                    reader["Place"].ToString());
+        }
+    }
+    return trainer;
+}
