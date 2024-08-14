@@ -1,0 +1,46 @@
+class Circle
+    {
+        public int Radius { get; set; }
+
+        public Circle(int radius)
+        {
+            Radius = radius;
+        }
+
+        public float Circumference()
+        {
+            return 2 * (float)Math.PI * Radius;
+        }
+
+        public bool IsCircumferenceGt(Circle other)
+        {
+            return this.Circumference() > other.Circumference();
+        }
+
+        public override string ToString()
+        {
+            return $"[Radius={Radius}, Circumference={Circumference():F2}]";
+        }
+    }
+
+    class TestCircle
+    {
+        static void Main(string[] args)
+        {
+            Circle circle1 = new Circle(5);
+            Circle circle2 = new Circle(7);
+
+            if (circle1.IsCircumferenceGt(circle2))
+            {
+                Console.WriteLine($"Circle 1 {circle1} has a greater circumference than Circle 2 {circle2}");
+            }
+            else if (circle1.Circumference() == circle2.Circumference())
+            {
+                Console.WriteLine("Both circles have equal circumferences.");
+            }
+            else
+            {
+                Console.WriteLine($"Circle 2 {circle2} has a greater circumference than Circle 1 {circle1}");
+            }
+        }
+      
