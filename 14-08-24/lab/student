@@ -1,0 +1,56 @@
+using System;
+
+namespace StudentMark
+{
+    class Student
+    {
+        public string Name;
+        public int Mark1;
+        public int Mark2;
+        public int Mark3;
+
+        private int totalMarks;
+        private double averageMarks;
+
+        
+        public void CalculateTotal()
+        {
+            totalMarks = Mark1 + Mark2 + Mark3;
+        }
+
+      
+        public void CalculateAverage()
+        {
+            averageMarks = totalMarks / 3.0;
+        }
+
+      
+        public void PrintResults()
+        {
+            Console.WriteLine($"Total Marks: {totalMarks}");
+            Console.WriteLine($"Average Marks: {averageMarks:0.00}");
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+         
+            Student student1 = new Student
+            {
+                Name = "John Doe",
+                Mark1 = 85,
+                Mark2 = 90,
+                Mark3 = 78
+            };
+
+        
+            student1.CalculateTotal();
+            student1.CalculateAverage();
+
+         
+            student1.PrintResults();
+        }
+    }
+}
