@@ -1,0 +1,41 @@
+class BikeRaceTrack
+    {
+        public int Distance { get; set; }
+
+        public BikeRaceTrack(int distance)
+        {
+            Distance = distance;
+        }
+
+        public bool IsGt(BikeRaceTrack other)
+        {
+            return this.Distance > other.Distance;
+        }
+
+        public override string ToString()
+        {
+            return $"[Distance={Distance} km]";
+        }
+    }
+
+    class TestBikeRaceTrack
+    {
+        static void Main(string[] args)
+        {
+            BikeRaceTrack track1 = new BikeRaceTrack(150);
+            BikeRaceTrack track2 = new BikeRaceTrack(200);
+
+            if (track1.IsGt(track2))
+            {
+                Console.WriteLine($"Track 1 {track1} is longer than Track 2 {track2}");
+            }
+            else if (track1.Distance == track2.Distance)
+            {
+                Console.WriteLine("Both tracks have the same distance.");
+            }
+            else
+            {
+                Console.WriteLine($"Track 2 {track2} is longer than Track 1 {track1}");
+            }
+        }
+    }
