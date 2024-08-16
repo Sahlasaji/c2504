@@ -1,0 +1,52 @@
+class CricketGround
+    {
+        public int LegSideDistance { get; set; }
+        public int OffSideDistance { get; set; }
+        public int StraightDistance { get; set; }
+        public int ThirdManDistance { get; set; }
+
+        public CricketGround(int legSideDistance, int offSideDistance, int straightDistance, int thirdManDistance)
+        {
+            LegSideDistance = legSideDistance;
+            OffSideDistance = offSideDistance;
+            StraightDistance = straightDistance;
+            ThirdManDistance = thirdManDistance;
+        }
+
+        public int FindShortestDistance()
+        {
+            return Math.Min(Math.Min(LegSideDistance, OffSideDistance), Math.Min(StraightDistance, ThirdManDistance));
+        }
+
+        public bool IsShortestDistanceGt(CricketGround other)
+        {
+            return this.FindShortestDistance() > other.FindShortestDistance();
+        }
+
+        public override string ToString()
+        {
+            return $"[LegSide={LegSideDistance}, OffSide={OffSideDistance}, Straight={StraightDistance}, ThirdMan={ThirdManDistance}, Shortest={FindShortestDistance()}]";
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CricketGround ground1 = new CricketGround(70, 65, 80, 75);
+            CricketGround ground2 = new CricketGround(68, 70, 82, 77);
+
+            if (ground1.IsShortestDistanceGt(ground2))
+            {
+                Console.WriteLine($"Ground 2 {ground2} is preferred for batsmen over Ground 1 {ground1}");
+            }
+            else if (ground1.FindShortestDistance() == ground2.FindShortestDistance())
+            {
+                Console.WriteLine("Both grounds have equal shortest boundary distances.");
+            }
+            else
+            {
+                Console.WriteLine($"Ground 1 {ground1} is preferred for batsmen over Ground 2 {ground2}");
+            }
+        }
+    }
