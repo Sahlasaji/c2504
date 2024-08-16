@@ -1,0 +1,137 @@
+using System;
+
+public class RationalNumber
+{
+    public int Numerator { get; private set; }
+    public int Denominator { get; private set; }
+
+    // Constructor
+    public RationalNumber(int numerator, int denominator)
+    {
+        if (denominator == 0)
+            throw new ArgumentException("Denominator cannot be zero.");
+
+        Numerator = numerator;
+        Denominator = denominator;
+        Simplify();
+    }
+
+    // Simplify the rational number
+    private void Simplify()
+    {
+        int gcd = GCD(Math.Abs(Numerator), Math.Abs(Denominator));
+        Numerator /= gcd;
+        Denominator /= gcd;
+        
+        // Ensure denominator is positive
+        if (Denominator < 0)
+        {
+            Numerator = -Numerator;
+            Denominator = -Denominator;
+        }
+    }
+
+    // Calculate the Greatest Common Divisor (GCD)
+    private int GCD(int a, int b)
+    {
+        while (b != 0)
+        {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    // Subtract two rational numbers
+    public RationalNumber Subtract(RationalNumber other)
+    {
+        int newNumerator = (Numerator * other.Denominator) - (other.Numerator * Denominator);
+        int newDenominator = Denominator * other.Denominator;
+        return new RationalNumber(newNumerator, newDenominator);
+    }
+
+    // Multiply two rational numbers
+    public RationalNumber Multiply(RationalNumber other)
+    {
+        int newNumerator = Numerator * other.Numerator;
+        int newDenominator = Denominator * other.Denominator;
+        return new RationalNumber(newNumerator, newDenominator);
+    }
+
+    // Divide two rational numbers
+    public RationalNumber Divide(RationalNumber other)
+    {
+        if (other.Numerator == 0)
+            throw new DivideByZeroException("Cannot divide by a rational number with a numerator of zero.");
+
+        int newNumerator = Numerator * other.Denominator;
+        int newDenominator = Denominator * other.Numerator;
+        return new RationalNumber(newNumerator, newDenominator);
+    }
+
+    // Equality check
+    public bool Equals(RationalNumber other)
+    {
+        return Numerator == other.Numerator && Denominator == other.Denominator;
+    }
+
+    // Greater than
+    public bool GreaterThan(RationalNumber other)
+    {
+        return (Numerator * other.Denominator) > (other.Numerator * Denominator);
+    }
+
+    // Not equal
+    public bool NotEqual(RationalNumber other)
+    {
+        return !Equals(other);
+    }
+
+    // Greater than or equal
+    public bool GreaterThanOrEqual(RationalNumber other)
+    {
+        return (Numerator * other.Denominator) >= (other.Numerator * Denominator);
+    }
+
+    // Less than
+    public bool LessThan(RationalNumber other)
+    {
+        return (Numerator * other.Denominator) < (other.Numerator * Denominator);
+    }
+
+    // Less than or equal
+    public bool LessThanOrEqual(RationalNumber other)
+    {
+        return (Numerator * other.Denominator) <= (other.Numerator * Denominator);
+    }
+
+    // Override ToString method for display
+    public override string ToString()
+    {
+        return $"{Numerator}/{Denominator}";
+    }
+}
+
+// Test the RationalNumber class
+class Program
+{
+    static void Main()
+    {
+        RationalNumber r1 = new RationalNumber(3, 4);
+        RationalNumber r2 = new RationalNumber(5, 6);
+
+        Console.WriteLine($"r1: {r1}");
+        Console.WriteLine($"r2: {r2}");
+
+        Console.WriteLine($"Subtract: {r1.Subtract(r2)}");
+        Console.WriteLine($"Multiply: {r1.Multiply(r2)}");
+        Console.WriteLine($"Divide: {r1.Divide(r2)}");
+        Console.WriteLine($"Equal: {r1.Equals(r2)}");
+        Console.WriteLine($"Greater Than: {r1.GreaterThan(r2)}");
+        Console.WriteLine($"Not Equal: {r1.NotEqual(r2)}");
+        Console.WriteLine($"Greater Than or Equal: {r1.GreaterThanOrEqual(r2)}");
+        Console.WriteLine($"Less Than: {r1.LessThan(r2)}");
+        Console.WriteLine($"Less Than or Equal: {r1.LessThanOrEqual(r2)}");
+    }
+}
