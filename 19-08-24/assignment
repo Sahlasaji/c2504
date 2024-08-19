@@ -1,0 +1,123 @@
+using System;
+
+abstract class Employee
+{
+    public abstract decimal CalculateSalary();
+    public abstract void PrintDetails();
+}
+
+class FullTimeEmployee : Employee
+{
+    public decimal BaseSalary { get; set; }
+    public decimal BonusPercentage { get; set; }
+
+    public FullTimeEmployee(decimal baseSalary, decimal bonusPercentage)
+    {
+        BaseSalary = baseSalary;
+        BonusPercentage = bonusPercentage;
+    }
+
+    public override decimal CalculateSalary()
+    {
+        return BaseSalary + (BaseSalary * BonusPercentage);
+    }
+
+    public override void PrintDetails()
+    {
+        Console.WriteLine($"Full-Time Employee | Salary: {CalculateSalary()}");
+    }
+}
+
+class PartTimeEmployee : Employee
+{
+    public decimal HourlyRate { get; set; }
+    public int HoursWorked { get; set; }
+
+    public PartTimeEmployee(decimal hourlyRate, int hoursWorked)
+    {
+        HourlyRate = hourlyRate;
+        HoursWorked = hoursWorked;
+    }
+
+    public override decimal CalculateSalary()
+    {
+        return HourlyRate * HoursWorked;
+    }
+
+    public override void PrintDetails()
+    {
+        Console.WriteLine($"Part-Time Employee | Salary: {CalculateSalary()}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter the number of employees: ");
+        int n = int.Parse(Console.ReadLine());
+
+        Employee[] employees = new Employee[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            Console.WriteLine($"Enter details for Employee {i + 1}:");
+            Console.Write("Is the employee Full-Time (y/n)? ");
+            string type = Console.ReadLine().ToLower();
+
+            if (type == "y")
+            {
+                Console.Write("Enter Base Salary: ");
+                decimal baseSalary = decimal.Parse(Console.ReadLine());
+                Console.Write("Enter Bonus Percentage: ");
+                decimal bonusPercentage = decimal.Parse(Console.ReadLine());
+                employees[i] = new FullTimeEmployee(baseSalary, bonusPercentage);
+            }
+            else
+            {
+                Console.Write("Enter Hourly Rate: ");
+                decimal hourlyRate = decimal.Parse(Console.ReadLine());
+                Console.Write("Enter Hours Worked: ");
+                int hoursWorked = int.Parse(Console.ReadLine());
+                employees[i] = new PartTimeEmployee(hourlyRate, hoursWorked);
+            }
+        }
+
+        Console.WriteLine("\nEmployees before sorting:");
+        PrintEmployees(employees);
+
+        SelectionSort(employees);
+
+        Console.WriteLine("\nEmployees after sorting:");
+        PrintEmployees(employees);
+    }
+
+    static void PrintEmployees(Employee[] employees)
+    {
+        foreach (Employee employee in employees)
+        {
+            employee.PrintDetails();
+        }
+    }
+
+    static void SelectionSort(Employee[] employees)
+    {
+        int n = employees.Length;
+
+        for (int i = 0; i < n - 1; i++)
+        {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++)
+            {
+                if (employees[j].CalculateSalary() < employees[minIndex].CalculateSalary())
+                {
+                    minIndex = j;
+                }
+            }
+
+            Employee temp = employees[minIndex];
+            employees[minIndex] = employees[i];
+            employees[i] = temp;
+        }
+    }
+}
