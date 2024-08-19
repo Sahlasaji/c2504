@@ -1,0 +1,183 @@
+using System;
+
+public abstract class Shape
+{
+    // Abstract method to calculate the area
+    public abstract double CalculateArea();
+
+    // Methods to compare shapes based on area
+    public bool Gt(Shape other)
+    {
+        return this.CalculateArea() > other.CalculateArea();
+    }
+
+    public bool Eq(Shape other)
+    {
+        return this.CalculateArea() == other.CalculateArea();
+    }
+
+    public bool Lt(Shape other)
+    {
+        return this.CalculateArea() < other.CalculateArea();
+    }
+
+    // Abstract method to read shape-specific data
+    public abstract void Read();
+}
+
+public class Rectangle : Shape
+{
+    // Properties for Length and Width
+    public double Length { get; set; }
+    public double Width { get; set; }
+
+    // Constructor to initialize Length and Width
+    public Rectangle(double length, double width)
+    {
+        Length = length;
+        Width = width;
+    }
+
+    public Rectangle()
+    {
+        Length = 0;
+        Width = 0;
+    }
+
+    // Override the CalculateArea method to return the area of the rectangle
+    public override double CalculateArea()
+    {
+        return Length * Width;
+    }
+
+    public override void Read()
+    {
+        Console.Write("Length: ");
+        Length = double.Parse(Console.ReadLine());
+        Console.Write("Width: ");
+        Width = double.Parse(Console.ReadLine());
+    }
+
+    public override string ToString()
+    {
+        return $"[Rectangle, Length = {Length}, Width = {Width}, Area = {CalculateArea()}]";
+    }
+}
+
+public class Circle : Shape
+{
+    // Property for Radius
+    public double Radius { get; set; }
+
+    // Constructor to initialize Radius
+    public Circle(double radius)
+    {
+        Radius = radius;
+    }
+
+    public Circle()
+    {
+        Radius = 0;
+    }
+
+    // Override the CalculateArea method to return the area of the circle
+    public override double CalculateArea()
+    {
+        return Math.PI * Radius * Radius;
+    }
+
+    public override void Read()
+    {
+        Console.Write("Radius: ");
+        Radius = double.Parse(Console.ReadLine());
+    }
+
+    public override string ToString()
+    {
+        return $"[Circle, Radius = {Radius}, Area = {CalculateArea()}]";
+    }
+}
+
+enum ShapeType
+{
+    Rectangle = 1,
+    Circle = 2
+}
+
+internal class Program
+{
+    static void SelectionSort(Shape[] ar)
+    {
+        int N = ar.Length;
+
+        for (int I = 0; I < N - 1; I++) // Traverse through the array
+        {
+            int minIndex = I; // Assume the current element is the minimum
+
+            for (int J = I + 1; J < N; J++) // Find the minimum element in the unsorted portion
+            {
+                if (ar[J].Lt(ar[minIndex])) // Compare using the Lt (less than) method
+                {
+                    minIndex = J; // Update minIndex if a smaller element is found
+                }
+            }
+
+            // Swap the found minimum element with the first element of the unsorted portion
+            if (minIndex != I)
+            {
+                Shape temp = ar[I];
+                ar[I] = ar[minIndex];
+                ar[minIndex] = temp;
+            }
+        }
+    }
+
+    static void ReadShapes(Shape[] shapes)
+    {
+        for (int I = 0; I < shapes.Length; I++)
+        {
+            Console.Write("Shape Type (1-Rectangle, 2-Circle): ");
+            ShapeType shapeType = (ShapeType)int.Parse(Console.ReadLine());
+            switch (shapeType)
+            {
+                case ShapeType.Rectangle:
+                    shapes[I] = new Rectangle();
+                    break;
+                case ShapeType.Circle:
+                    shapes[I] = new Circle();
+                    break;
+            }
+            shapes[I].Read();
+        }
+    }
+
+    static void PrintShapes(Shape[] shapes)
+    {
+        foreach (Shape shape in shapes)
+        {
+            Console.WriteLine(shape);
+        }
+    }
+
+    static void ProcessShapes()
+    {
+        Console.Write("Number of shapes: ");
+        int N = int.Parse(Console.ReadLine());
+        Shape[] shapes = new Shape[N];
+
+        ReadShapes(shapes);
+        Console.WriteLine("Before sorting:");
+        PrintShapes(shapes);
+        
+        // Sorting
+        SelectionSort(shapes);
+        
+        Console.WriteLine("After sorting:");
+        PrintShapes(shapes);
+    }
+
+    static void Main(string[] args)
+    {
+        ProcessShapes();
+    }
+}
