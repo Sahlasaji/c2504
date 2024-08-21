@@ -1,0 +1,27 @@
+using System;
+
+class Program
+{
+    // Method that uses the 'params' keyword to accept a variable number of arguments
+    static int AddNumbers(params int[] numbers)
+    {
+        int sum = 0;
+        foreach (int number in numbers)
+        {
+            sum += number;
+        }
+        return sum;
+    }
+
+    static void Main()
+    {
+        // You can pass any number of integers to the AddNumbers method
+        int sum1 = AddNumbers(1, 2, 3, 4, 5);
+        int sum2 = AddNumbers(10, 20);
+        int sum3 = AddNumbers(7, 14, 21, 28, 35);
+
+        Console.WriteLine("Sum 1: " + sum1); // Output: Sum 1: 15
+        Console.WriteLine("Sum 2: " + sum2); // Output: Sum 2: 30
+        Console.WriteLine("Sum 3: " + sum3); // Output: Sum 3: 105
+    }
+}
