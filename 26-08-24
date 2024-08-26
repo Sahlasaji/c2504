@@ -26,3 +26,33 @@ public class SampleClass
             arr[index] = value;
         }
         
+ can configure log4net using an XML configuration file (e.g., `App.config`, `Web.config`) or by code. Here’s an example using an XML configuration:
+
+App.config or Web.config:
+```xml
+<configuration>
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+  </configSections>
+
+  <log4net>
+    <appender name="FileAppender" type="log4net.Appender.RollingFileAppender">
+      <file value="logfile.log" />
+      <appendToFile value="true" />
+      <rollingStyle value="Size" />
+      <maxSizeRollBackups value="5" />
+      <maximumFileSize value="10MB" />
+      <staticLogFileName value="true" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+      </layout>
+    </appender>
+    <root>
+      <level value="ALL" />
+      <appender-ref ref="FileAppender" />
+    </root>
+  </log4net>
+
+  ....
+</configuration>
+```
