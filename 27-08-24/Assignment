@@ -162,4 +162,29 @@ namespace Week4AssessmentApp
         }
     }
 }
+- Create the database
+CREATE DATABASE Week4AssessmentDb;
 
+
+-- Use the newly created database
+USE Week4AssessmentDb;
+
+
+-- Create the PrescriptionCosts table
+CREATE TABLE PrescriptionCosts (
+    PrescriptionID INT PRIMARY KEY,
+    PatientName NVARCHAR(100),
+    Medication NVARCHAR(100),
+    Cost FLOAT
+);
+
+
+-- Insert sample data into the PrescriptionCosts table
+INSERT INTO PrescriptionCosts (PrescriptionID, PatientName, Medication, Cost) 
+VALUES 
+(1, 'John Doe', 'Aspirin', 15.50),
+(2, 'Jane Smith', 'Ibuprofen', 8.25),
+(3, 'Michael Brown', 'Paracetamol', 12.75);
+
+
+SELECT * FROM PrescriptionCosts;
