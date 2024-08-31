@@ -1,0 +1,79 @@
+namespace Week4AssessmentApp.Tests
+{
+    [TestClass()]
+    public class PrescriptionCostServiceTests
+    {
+        [TestMethod()]
+        public void SortByMedication_Test()
+        {
+            // Arrange
+            PrescriptionCost[] prescriptions = new PrescriptionCost[3];
+            prescriptions[0] = new PrescriptionCost { PrescriptionID = 1, PatientName = "John", Medication = "Aspirin", Cost = 10.0 };
+            prescriptions[1] = new PrescriptionCost { PrescriptionID = 2, PatientName = "Doe", Medication = "Zyrtec", Cost = 20.0 };
+            prescriptions[2] = new PrescriptionCost { PrescriptionID = 3, PatientName = "Smith", Medication = "Tylenol", Cost = 15.0 };
+
+            PrescriptionCost expected = new PrescriptionCost
+            {
+                PrescriptionID = 1,
+                PatientName = "John",
+                Medication = "Aspirin",
+                Cost = 10.0
+            };
+
+            // Act
+            PrescriptionCostService.SortByMedication(prescriptions);
+            PrescriptionCost actual = prescriptions[0];
+
+            // Assert
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void FindMinCostTest()
+        {
+            // Arrange
+            PrescriptionCost[] prescriptions = new PrescriptionCost[3];
+            prescriptions[0] = new PrescriptionCost { PrescriptionID = 1, PatientName = "John", Medication = "Aspirin", Cost = 10.0 };
+            prescriptions[1] = new PrescriptionCost { PrescriptionID = 2, PatientName = "Doe", Medication = "Zyrtec", Cost = 20.0 };
+            prescriptions[2] = new PrescriptionCost { PrescriptionID = 3, PatientName = "Smith", Medication = "Tylenol", Cost = 15.0 };
+
+            PrescriptionCost expected = new PrescriptionCost
+            {
+                PrescriptionID = 1,
+                PatientName = "John",
+                Medication = "Aspirin",
+                Cost = 10.0
+            };
+
+            // Act
+            PrescriptionCost actual = PrescriptionCostService.FindMinCost(prescriptions);
+
+            // Assert
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void FindSecondMaxCostTest()
+        {
+                // Arrange
+                PrescriptionCost[] prescriptions = new PrescriptionCost[3];
+                prescriptions[0] = new PrescriptionCost { PrescriptionID = 1, PatientName = "John", Medication = "Aspirin", Cost = 10.0 };
+                prescriptions[1] = new PrescriptionCost { PrescriptionID = 2, PatientName = "Doe", Medication = "Zyrtec", Cost = 20.0 };
+                prescriptions[2] = new PrescriptionCost { PrescriptionID = 3, PatientName = "Smith", Medication = "Tylenol", Cost = 15.0 };
+
+                PrescriptionCost expected = new PrescriptionCost
+                {
+                    PrescriptionID = 3,
+                    PatientName = "Smith",
+                    Medication = "Tylenol",
+                    Cost = 15.0
+                };
+
+                // Act
+                PrescriptionCost actual = PrescriptionCostService.FindSecondMaxCost(prescriptions);
+
+                // Assert
+                Assert.AreEqual(expected.ToString(), actual.ToString());
+            }
+        }
+    }
