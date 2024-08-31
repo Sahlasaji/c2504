@@ -1,0 +1,56 @@
+Select an operation:
+1. Create Prescription
+2. Read Prescriptions
+3. Update Prescription
+4. Delete Prescription
+5. Exit
+Enter your choice: 1
+Enter Patient Name:
+Sahla
+Enter Medication:
+dolo
+Enter Cost:
+56
+Select an operation:
+1. Create Prescription
+2. Read Prescriptions
+3. Update Prescription
+4. Delete Prescription
+5. Exit
+Enter your choice: 2
+ID: 1, Name: John Doe, Medication: Aspirin, Cost: $15.5
+ID: 2, Name: Jane Smith, Medication: Ibuprofen, Cost: $8.25
+ID: 3, Name: Michael Brown, Medication: Paracetamol, Cost: $12.75
+Select an operation:
+1. Create Prescription
+2. Read Prescriptions
+3. Update Prescription
+4. Delete Prescription
+5. Exit
+Enter your choice: 3
+Enter Prescription ID to update:
+2
+Enter new Patient Name:
+Samuel
+Enter new Medication:
+Amoxycilin
+Enter new Cost:
+43
+Select an operation:
+1. Create Prescription
+2. Read Prescriptions
+3. Update Prescription
+4. Delete Prescription
+5. Exit
+Enter your choice: 4
+Enter Prescription ID to delete:
+1
+Select an operation:
+1. Create Prescription
+2. Read Prescriptions
+3. Update Prescription
+4. Delete Prescription
+5. Exit
+Enter your choice:
+
+
