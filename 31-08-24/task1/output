@@ -1,0 +1,5 @@
+2024-08-31 17:27:05,225 [1] INFO  Program - Prescription with the lowest cost: ID: 2, Name: Jane Smith, Medication: Ibuprofen, Cost: $8.25
+2024-08-31 17:27:05,242 [1] INFO  Program - Prescription with the second highest cost: ID: 3, Name: Michael Brown, Medication: Paracetamol, Cost: $12.75
+2024-08-31 17:27:05,243 [1] INFO  Program - Prescriptions sorted by Medication Name: ID: 1, Name: John Doe, Medication: Aspirin, Cost: $15.5 ID: 2, Name: Jane Smith, Medication: Ibuprofen, Cost: $8.25 ID: 3, Name: Michael Brown, Medication: Paracetamol, Cost: $12.75
+Press any key to continue . . .
+
