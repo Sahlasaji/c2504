@@ -1,0 +1,170 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using log4net;
+using Week4AssessmentApp;
+
+namespace  Week4AssessmentApp
+
+
+{
+    public class ServerException : Exception
+    {
+        public ServerException(string message) : base(message) { }
+    }
+
+    public class PrescriptionCost
+    {
+        public int PrescriptionID { get; set; }
+        public string PatientName { get; set; }
+        public string Medication { get; set; }
+        public double Cost { get; set; }
+
+        public override string ToString()
+        {
+            return $"ID: {PrescriptionID}, Name: {PatientName}, Medication: {Medication}, Cost: ${Cost}";
+        }
+    }
+
+    public class PrescriptionCostService
+    {
+
+        private static string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog = Week4AssessmentDb; Integrated Security = True;";
+
+        public static void Read(PrescriptionCost[] prescriptions)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT PrescriptionID, PatientName, Medication, Cost FROM PrescriptionCosts";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    for (int i = 0; i < prescriptions.Length; i++)
+                    {
+                        if (!reader.Read())
+                        {
+                            throw new ServerException("[0101]Server Error.");
+                        }
+                        prescriptions[i] = new PrescriptionCost
+                        {
+                            PrescriptionID = (int)reader["PrescriptionID"],
+                            PatientName = reader["PatientName"].ToString(),
+                            Medication = reader["Medication"].ToString(),
+                            Cost = (double)reader["Cost"]
+                        };
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new ServerException($"[0102]Server Error. {ex.Message}");
+            }
+            catch (ServerException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerException($"[0103]Server Error. {ex.Message}");
+            }
+        }
+
+        public static void SortByMedication(PrescriptionCost[] prescriptions)
+        {
+            for (int i = 0; i < prescriptions.Length - 1; i++)
+            {
+                for (int j = 0; j < prescriptions.Length - i - 1; j++)
+                {
+                    if (string.Compare(prescriptions[j].Medication, prescriptions[j + 1].Medication) > 0)
+                    {
+                        var temp = prescriptions[j];
+                        prescriptions[j] = prescriptions[j + 1];
+                        prescriptions[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        public static PrescriptionCost FindMinCost(PrescriptionCost[] prescriptions)
+        {
+            double min = double.MaxValue;
+            PrescriptionCost minPrescription = null;
+            foreach (var prescription in prescriptions)
+            {
+                if (prescription.Cost < min)
+                {
+                    minPrescription = prescription;
+                    min = prescription.Cost;
+                }
+            }
+            return minPrescription;
+        }
+
+        public static PrescriptionCost FindSecondMaxCost(PrescriptionCost[] prescriptions)
+        {
+            double max = double.MinValue;
+            double secondMax = double.MinValue;
+
+            PrescriptionCost maxPrescription = null;
+            PrescriptionCost secondMaxPrescription = null;
+
+            foreach (var prescription in prescriptions)
+            {
+                if (prescription.Cost > max)
+                {
+                    if (max != double.MinValue)
+                    {
+                        secondMaxPrescription = maxPrescription;
+                        secondMax = secondMaxPrescription.Cost;
+                    }
+                    maxPrescription = prescription;
+                    max = prescription.Cost;
+                }
+                else if (prescription.Cost > secondMax && prescription.Cost != max)
+                {
+                    secondMaxPrescription = prescription;
+                    secondMax = secondMaxPrescription.Cost;
+                }
+            }
+            return secondMaxPrescription;
+        }
+    }
+}
+    public class Program
+    {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Program));
+
+        static void Main(string[] args)
+        {
+            PrescriptionCost[] prescriptions = new PrescriptionCost[3];
+            try
+            {
+                PrescriptionCostService.Read(prescriptions);
+            }
+            catch (ServerException ex)
+            {
+                log.Error($"{ex.Message}");
+            }
+
+            PrescriptionCost min = PrescriptionCostService.FindMinCost(prescriptions);
+            log.Info($"Prescription with the lowest cost: {min}");
+
+            PrescriptionCost secondMax = PrescriptionCostService.FindSecondMaxCost(prescriptions);
+            log.Info($"Prescription with the second highest cost: {secondMax}");
+
+            PrescriptionCostService.SortByMedication(prescriptions);
+            string output = "";
+            foreach (var prescription in prescriptions)
+            {
+                output += $"{prescription} ";
+            }
+            log.Info($"Prescriptions sorted by Medication Name: {output}");
+        }
+    }
