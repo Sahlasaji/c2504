@@ -1,0 +1,408 @@
+<TextBlock Width="150" Text="Last Transaction Date"/>
+            <TextBox Width="300" IsEnabled="False" Margin="100 0 0 0" Text="{Binding SelectedAccount.LastTransactionDate}"/>
+        </StackPanel>
+    </StackPanel>
+
+    <Button HorizontalAlignment="right" Grid.Row="2" Width="200" Background="Teal" Content="Save" Foreground="White" FontWeight="bold"
+    Height="50"
+    Margin="0 10 20 20"
+            Command="{Binding UpdateCommand}"/>
+
+</Grid>
+
+EditAccountWindow.xaml.cs
+
+    public partial class EditAccountWindow : Window
+    {
+        public EditAccountWindow()
+        {
+            InitializeComponent();
+            this.DataContext = FormConfig.accountViewModel;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
+
+        public void WindowClose()
+        {
+            this.Hide();
+        }
+    }
+}
+
+NewAccountWindow.xaml
+
+<Grid MaxWidth="1200" Margin="0 10 0 0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" TextAlignment="center" Text="New Account"
+               FontSize="22" FontWeight="Bold"/>
+    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0 10 0 0">
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Account Number"/>
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.AccountNumber}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Name"/>
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.Name}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Balance" />
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.Balance}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Type"/>
+            <RadioButton Content="current"  Margin="100 0 0 0" />
+            <RadioButton Content="savings"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Email"/>
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.Email}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Phone"/>
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.PhoneNumber}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Address"/>
+            <TextBox  Width="300" Margin="100 0 0 0" Text="{Binding NewAccount.Address}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="IsActive"/>
+            <CheckBox Content="" Margin="100 0 0 0"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Interest Percentage"/>
+            <ComboBox Margin="100 0 0 0">
+                <ComboBoxItem Content="5%"/>
+                <ComboBoxItem Content="10%"/>
+                <ComboBoxItem Content="15%"/>
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Transaction Count"/>
+            <TextBox Width="300" IsEnabled="False" Margin="100 0 0 0" Text="{Binding NewAccount.TransactionCount}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="10 10 10 10">
+            <TextBlock Width="150" Text="Last Transaction Date"/>
+            <TextBox Width="300" IsEnabled="False" Margin="100 0 0 0" Text="{Binding NewAccount.LastTransactionDate}"/>
+        </StackPanel>
+    </StackPanel>
+
+    <Button HorizontalAlignment="right" Grid.Row="2" Width="200" Background="Teal" Content="Save" Foreground="White" FontWeight="bold"
+            Height="50"
+            Margin="0 10 20 20"
+            Command="{Binding CreateCommand}"/>
+
+</Grid>
+
+
+NewAccountWindow.xaml.cs
+
+ public partial class NewAccountWindow : Window
+ {
+     public NewAccountWindow()
+     {
+         InitializeComponent();
+         this.DataContext = FormConfig.accountViewModel;
+     }
+
+     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+     {
+         e.Cancel = true;
+         this.Hide();
+     }
+
+     public void WindowClose()
+     {
+         this.Hide();
+     }
+ }
+
+AccountMemoryRepo.cs
+
+    public class AccountMemoryRepo : IAccountRepo
+    {
+        public ObservableCollection<Account> accounts = new ObservableCollection<Account>()
+        {
+            new Account
+            {
+                AccountNumber = 3132324,
+                Name = "Minnu",
+                Balance = 0,
+                Type = "savings",
+                Email = "minnu@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "gdsagdhsgdhsg",
+                IsActive = true,
+                InterestPercentage = 0,
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+
+
+            },
+            new Account
+            {
+                AccountNumber = 3132324,
+                Name = "Ashna",
+                Balance = 0,
+                Type = "current",
+                Email = "minnu@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "gdsagdhsgdhsg",
+                IsActive = true,
+                InterestPercentage = 0,
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+
+
+            }
+        };
+
+        public void Create(Account account)
+        {
+            accounts.Add(account);
+        }
+
+        public void UpdateAccount(Account account)
+        {
+             foreach(var ac in accounts)
+            {
+                if (ac.AccountNumber == account.AccountNumber)
+                {
+                    ac.Address = account.Address;
+                }
+            }
+        }
+
+        public ObservableCollection<Account> ReadAllAccount()
+        {
+            return accounts;
+        }
+
+        public void DeleteAccount(int acNo, Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deposit(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Withdrw(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CalculateInterestAndUpdateBalance()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+Account.cs
+
+public class Account
+{
+    public int AccountNumber { get; set; }
+    public string Name { get; set; }
+    public Decimal Balance { get; set; }
+    public string Type { get; set; }
+    public String Email { get; set; }
+    public String PhoneNumber { get; set; }
+    public String Address { get; set; }
+    public bool IsActive{ get; set; }
+    public int InterestPercentage  { get; set; }
+    public int TransactionCount { get; set; }
+    public DateTime LastTransactionDate { get; set; }
+
+}
+
+IAccountRepo.cs
+
+public interface IAccountRepo
+{
+    void Create(Account account);
+    void UpdateAccount(Account account);
+
+    void DeleteAccount(int acNo , Account account);
+    void Deposit(int acNo , int Amount);
+    void Withdrw(int acNo , int Amount);
+    void CalculateInterestAndUpdateBalance();
+    ObservableCollection<Account> ReadAllAccount();
+}
+
+AccountViewModel.cs
+
+public delegate void DWidnowClose();
+public class AccountViewModel : ViewModelBase
+{
+
+    private Account _newAccount = null;
+    public DWidnowClose NewWindowClose;
+    public DWidnowClose EditWindowClose;
+
+    public Account NewAccount
+    {
+        get { return _newAccount; }
+        set
+        {
+            _newAccount = value;
+            onPropertyChanged(nameof(NewAccount));
+        }
+    }
+
+    private Account _selectedAccount = null;
+    public Account SelectedAccount
+    {
+        get => _selectedAccount;
+        set {
+            _selectedAccount = value;
+            onPropertyChanged(nameof(SelectedAccount));
+        }
+    }
+
+
+    private IAccountRepo _repo = new AccountMemoryRepo();
+    public ObservableCollection<Account> Accounts
+    {
+        get
+        {
+            return _repo.ReadAllAccount();
+        }
+    }
+
+    public ICommand CreateCommand { get; }
+    public ICommand UpdateCommand { get; }
+
+    public AccountViewModel()
+    {
+        this.NewAccount = new Account
+        {
+            AccountNumber = 00000,
+            Name = "",
+            Balance = 0,
+            Type = "savings",
+            Email = "minnu@gmail.com",
+            PhoneNumber = "5236526526",
+            Address = "gdsagdhsgdhsg",
+            IsActive = true,
+            InterestPercentage = 0,
+            TransactionCount = 0,
+            LastTransactionDate = DateTime.Now,
+
+
+        };
+        CreateCommand = new RelayCommand(Create);
+        UpdateCommand = new RelayCommand(Update);
+    }
+
+    public void Create()
+    {
+        Account newAccount = new Account
+        {
+            AccountNumber = NewAccount.AccountNumber,
+            Name = NewAccount.Name,
+            Balance = NewAccount.Balance,
+            Type = NewAccount.Type,
+            Email = NewAccount.Email,
+            PhoneNumber = NewAccount.PhoneNumber,
+            Address = NewAccount.Address,
+            IsActive = NewAccount.IsActive,
+            InterestPercentage = NewAccount.InterestPercentage,
+            TransactionCount = NewAccount.TransactionCount,
+            LastTransactionDate = NewAccount.LastTransactionDate,
+        };
+        var result = MessageBox.Show(messageBoxText: "Are you sure to create?",
+                caption: "Confirm",
+                button: MessageBoxButton.YesNo,
+                icon: MessageBoxImage.Question);
+        if (result != MessageBoxResult.Yes)
+        {
+            return;
+        }
+        _repo.Create(newAccount);
+        this.NewAccount = new Account { AccountNumber = 0, Name = "", Balance = 0, Type = "", Email = "", PhoneNumber = "", Address = "", IsActive = false, InterestPercentage = 0, TransactionCount = 0, LastTransactionDate = DateTime.Now };
+        //this.NewItenary.Id = 0;
+        //..
+        //this.NewItenary = NewItenary;
+        result = MessageBox.Show(messageBoxText: "Created Successfully",
+                caption: "Alert",
+                button: MessageBoxButton.OK,
+                icon: MessageBoxImage.Information);
+
+        if (NewWindowClose != null)
+        {
+            NewWindowClose();
+        }
+    }
+
+    public void Update()
+    {
+        if (this.SelectedAccount == null)
+        {
+            return;
+        }
+
+        _repo.UpdateAccount(this.SelectedAccount);
+        this.SelectedAccount = this.SelectedAccount;
+        var result = MessageBox.Show(messageBoxText: "Updated Successfully",
+                caption: "Alert",
+                button: MessageBoxButton.OK,
+                icon: MessageBoxImage.Information);
+
+        if (EditWindowClose != null)
+        {
+            EditWindowClose();
+        }
+    }
+}
+
+
+ViewModelBase.cs
+
+public class ViewModelBase : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public void onPropertyChanged(string propertyName)
+    {
+        if(PropertyChanged != null)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}
+
+FormConfig.cs
+
+public static class FormConfig
+{
+    public static NewAccountWindow newAccountWindow = null;
+    public static EditAccountWindow editAccountWindow = null;
+    public static AccountViewModel accountViewModel = null;
+    static FormConfig()
+    {
+        accountViewModel = new AccountViewModel();
+        editAccountWindow = new EditAccountWindow();
+        newAccountWindow = new NewAccountWindow();
+}
+}
