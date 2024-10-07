@@ -1,0 +1,380 @@
+AccountSqlRepo
+
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlClient;
+using BankManagementSystem.Exceptions;
+using BankManagementSystem.Models;
+using BankManagementSystem.Repos;
+
+
+namespace BankManagementProject
+{
+    public class AccountSQLRepo : IAccountRepo
+    {
+        private static AccountSQLRepo _instance;
+        private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AccountsDb;Integrated Security=True;";
+
+        public static AccountSQLRepo Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AccountSQLRepo();
+                }
+                return _instance;
+            }
+        }
+
+        public void Create(Account accModel)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "INSERT INTO Accounts (AccNo, Name, Balance, AccType, Email, PhNo, Address, IsActive, InterestPercentage, TransactionCount, LastTransactionDate) " +
+                                   "VALUES (@AccNo, @Name, @Balance, @AccType, @Email, @PhNo, @Address, @IsActive, @InterestPercentage, @TransactionCount, @LastTransactionDate)";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AccNo", accModel.AccountNumber);
+                    cmd.Parameters.AddWithValue("@Name", accModel.Name);
+                    cmd.Parameters.AddWithValue("@Balance", accModel.Balance);
+                    cmd.Parameters.AddWithValue("@AccType", accModel.Type);
+                    cmd.Parameters.AddWithValue("@Email", accModel.Email);
+                    cmd.Parameters.AddWithValue("@PhNo", accModel.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@Address", accModel.Address);
+                    cmd.Parameters.AddWithValue("@IsActive", accModel.IsActive);
+                    cmd.Parameters.AddWithValue("@InterestPercentage", accModel.InterestPercentage);
+                    cmd.Parameters.AddWithValue("@TransactionCount", accModel.TransactionCount);
+                    cmd.Parameters.AddWithValue("@LastTransactionDate", accModel.LastTransactionDate);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error in creating account");
+            }
+        }
+
+        public void UpdateAccount(Account accModel)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Accounts SET Address = @Address WHERE AccNo = @AccNo";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AccNo", accModel.AccountNumber);
+                    cmd.Parameters.AddWithValue("@Address", accModel.Address);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new AccountException("Account doesn't exist");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error in updating account");
+            }
+        }
+
+        public List<Account> ReadAllAccount()
+        {
+            try
+            {
+                List<Account> accounts = new List<Account>();
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Accounts";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Account account = new Account
+                        {
+                            AccountNumber = (int)reader["AccNo"],
+                            Name = (string)reader["Name"],
+                            Balance = (decimal)reader["Balance"],
+                            Type = (string)reader["AccType"],
+                            Email = (string)reader["Email"],
+                            PhoneNumber = (string)reader["PhNo"],
+                            Address = (string)reader["Address"],
+                            IsActive = (bool)reader["IsActive"],
+                            InterestPercentage = reader["InterestPercentage"].ToString(),
+                            TransactionCount = (int)reader["TransactionCount"],
+                            LastTransactionDate = (DateTime)reader["LastTransactionDate"]
+                        };
+                        accounts.Add(account);
+                    }
+                }
+                return accounts;
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error reading accounts");
+            }
+        }
+
+        public void DeleteAccount(Account accModel)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "DELETE FROM Accounts WHERE AccNo = @AccNo";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AccNo", accModel.AccountNumber);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error in deleting account");
+            }
+        }
+
+        public void Deposit(int acNo, int Amount)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Accounts SET Balance = Balance + @Amount, LastTransactionDate = @LastTransactionDate, TransactionCount = TransactionCount + 1 WHERE AccNo = @AccNo";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AccNo", acNo);
+                    cmd.Parameters.AddWithValue("@Amount", Amount);
+                    cmd.Parameters.AddWithValue("@LastTransactionDate", DateTime.Now);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new AccountException("Account not found, please input a valid account number");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error in deposit");
+            }
+        }
+
+        public void Withdraw(int acNo, int Amount)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "UPDATE Accounts SET Balance = Balance - @Amount, LastTransactionDate = @LastTransactionDate, TransactionCount = TransactionCount + 1 WHERE AccNo = @AccNo AND Balance >= @Amount";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AccNo", acNo);
+                    cmd.Parameters.AddWithValue("@Amount", Amount);
+                    cmd.Parameters.AddWithValue("@LastTransactionDate", DateTime.Now);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new AccountException("Insufficient balance or account not found");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AccountException("Error in withdrawal");
+            }
+        }
+
+        public void CalculateInterestAndUpdateBalance()
+        {
+            // Implementation for calculating and updating interest on account balances
+            throw new NotImplementedException();
+        }
+
+        ObservableCollection<Account> IAccountRepo.ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateAccount(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Withdrw(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<Account> ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+
+AccountSqlQuery
+
+CREATE DATABASE AccountsDb;
+USE AccountsDb;
+CREATE TABLE Accounts( AccNo INT, Name nvarchar(255), Balance decimal,AccType nvarchar(255),Email nvarchar(255),PhNo nvarchar(255),Address nvarchar(255),IsActive BIT,InterestPercentage nvarchar(255),TransactionCount INT,LastTransactionDate DATETIME);
+INSERT INTO Accounts (AccNo, Name, Balance, AccType, Email, PhNo, Address, IsActive, InterestPercentage, TransactionCount, LastTransactionDate)
+                                   VALUES (100, 'rahul', 200, 'current', 'rahul@gmail.com', '123456', 'g street', 'true', '5%', 2,GETDATE());
+SELECT * FROM Accounts;
+
+
+
+UnitTest.cs
+
+
+  using System;
+using System.Collections.ObjectModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BankManagementSystem;
+using BankManagementSystem.Models;
+using BankManagementSystem.Databases;
+using System.Linq;
+
+namespace BankManagementAppTests
+{
+    [TestClass]
+    public class AccountMemoryRepoTests
+    {
+        private AccountMemoryRepo _repo;
+        [TestInitialize]
+        public void initialize()
+        {
+            _repo = AccountMemoryRepo.Instance;
+        }
+        [TestMethod]
+        public void Test_ReadAllAccounts()
+        {
+            _repo = AccountMemoryRepo.Instance;
+            var accounts = _repo.ReadAll();
+
+            Assert.AreEqual(2, accounts.Count);
+            Assert.IsTrue(accounts.Any(a => a.AccountNumber == 1234));
+            Assert.IsTrue(accounts.Any(a => a.AccountNumber == 12345));
+        }
+
+        [TestMethod]
+        public void Test_CreateAccount()
+        {
+            var account = new Account()
+            {
+                AccountNumber = 49,
+                Name = "Rishwin",
+                Balance = 0,
+                Type = "current",
+                Email = "rishwin@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "address",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            };
+            _repo.Create(account);
+
+            Assert.IsTrue(_repo.ReadAll().Any(ac => ac.AccountNumber == 49));
+        }
+
+        [TestMethod]
+        public void Test_UpdateAccount()
+        {
+            Account account = new Account
+            {
+                AccountNumber = 1234,
+                Name = "Minnu",
+                Balance = 0,
+                Type = "savings",
+                Email = "minnu@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "Address",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            };
+
+            account.Address = "New Address";
+            _repo.Update(account);
+            Assert.AreEqual("New Address", _repo.ReadAll().First(a => a.AccountNumber == 1234).Address);
+        }
+        [TestMethod]
+        public void Test_Deposit()
+        {
+            Account account = new Account
+            {
+                AccountNumber = 1234,
+                Name = "Minnu",
+                Balance = 0,
+                Type = "savings",
+                Email = "minnu@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "Address",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            };
+
+            _repo.Deposit(account.AccountNumber, 1000);
+            Assert.AreEqual(1000 , _repo.ReadAll().First(ac => ac.AccountNumber == account.AccountNumber).Balance);
+        }
+
+        [TestMethod]
+        public void Test_Withdraw()
+        {
+            var account = new Account()
+            {
+                AccountNumber = 12345,
+                Name = "Ashna",
+                Balance = 0,
+                Type = "current",
+                Email = "ashna@gmail.com",
+                PhoneNumber = "5236526526",
+                Address = "address",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            };
+
+            _repo.Deposit(account.AccountNumber, 1000);
+            _repo.Withdrw(account.AccountNumber, 700);
+            Assert.AreEqual(300, _repo.ReadAll().First(ac => ac.AccountNumber == account.AccountNumber).Balance);
+
+        }
+
+    }
+}
