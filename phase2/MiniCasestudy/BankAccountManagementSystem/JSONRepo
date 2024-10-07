@@ -1,0 +1,231 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
+using BankManagementSystem.Exceptions;
+using BankManagementSystem.Models;
+using BankManagementSystem.Repos;
+using System.Xml;
+
+namespace BankManagementSystem.Databases
+{
+    /// <summary>
+    /// Represents a repository for managing accounts in a JSON file.
+    /// </summary>
+    public class AccountJsonRepo : IAccountRepo
+    {
+        /// <summary>
+        /// Gets the instance of the AccountJsonRepo class.
+        /// </summary>
+        private static AccountJsonRepo _instance;
+
+        /// <summary>
+        /// Initializes a new instance of the AccountJsonRepo class.
+        /// </summary>
+        private AccountJsonRepo()
+        {
+            LoadAccountsFromJson();
+        }
+
+        /// <summary>
+        /// Loads accounts from a JSON file.
+        /// </summary>
+        private void LoadAccountsFromJson()
+        {
+            try
+            {
+                string filePath = Path.Combine(Environment.CurrentDirectory, "accounts.json");
+                if (File.Exists(filePath))
+                {
+                    var json = File.ReadAllText(filePath);
+                    accounts = JsonConvert.DeserializeObject<ObservableCollection<Account>>(json);
+                }
+                else
+                {
+                    accounts = new ObservableCollection<Account>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Saves accounts to a JSON file.
+        /// </summary>
+        private void SaveAccountsToJson()
+        {
+            try
+            {
+                string filePath = Path.Combine(Environment.CurrentDirectory, "accounts.json");
+                var json = JsonConvert.SerializeObject(accounts, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Creates an object for the AccountJsonRepo class
+        /// </summary>
+        public static AccountJsonRepo Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AccountJsonRepo();
+                }
+                return _instance;
+            }
+        }
+
+        private ObservableCollection<Account> accounts;
+
+        /// <summary>
+        /// Creates a new account in the repository.
+        /// </summary>
+        /// <param name="account">The account to create.</param>
+        /// <exception cref="AccountException">Thrown if an error occurs while creating the account.</exception>
+        /// 
+
+        private void InitializeAccounts()
+        {
+            accounts.Add(new Account
+            {
+                AccountNumber = 12356898,
+                Name = "Sahla",
+                Balance = 0,
+                Type = "savings",
+                Email = "sahla@gmail.com",
+                PhoneNumber = "98789653",
+                Address = "dhgjhj",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            });
+            
+        }
+        public void Create(Account account)
+        {
+            try
+            {
+                accounts.Add(account);
+                SaveAccountsToJson();
+            }
+            catch (AccountException ae)
+            {
+                throw new AccountException("Error in creating account");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing account in the repository.
+        /// </summary>
+        /// <param name="account">The account to update.</param>
+        /// <exception cref="AccountException">Thrown if the account does not exist.</exception>
+        public void Update(Account account)
+        {
+            try
+            {
+                var existingAccount = accounts.FirstOrDefault(a => a.AccountNumber == account.AccountNumber);
+                if (existingAccount != null)
+                {
+                    existingAccount.Address = account.Address;
+                    SaveAccountsToJson();
+                }
+                else
+                {
+                    throw new AccountException("Account doesn't exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all accounts from the repository.
+        /// </summary>
+        /// <returns>A collection of all accounts in the repository.</returns>
+        /// <exception cref="AccountException">Thrown if an error occurs while reading accounts.</exception>
+        public ObservableCollection<Account> ReadAll()
+        {
+            try
+            {
+                return accounts;
+            }
+            catch (AccountException ae)
+            {
+                throw new AccountException("Error reading accounts");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Deletes an account from the repository.
+        /// </summary>
+        /// <param name="acNo">The account number of the account to delete.</param>
+        /// <param name="account">The account to delete.</param>
+        public void Delete(int acNo, Account account)
+        {
+            try
+            {
+                var existingAccount = accounts.FirstOrDefault(a => a.AccountNumber == acNo);
+                if (existingAccount != null)
+                {
+                    accounts.Remove(existingAccount);
+                    SaveAccountsToJson();
+                }
+                else
+                {
+                    throw new AccountException("Account doesn't exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Delete(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deposit(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Withdrw(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CalculateInterestAndUpdateBalance()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+        /// <summary>
+        /// Deposits a specified amount into an account.
+        /// </summary>
+        /// <param name="acNo">The account number of the account to deposit into.</param>
+        /// <param name="Amount">The amount to deposit.</param>
