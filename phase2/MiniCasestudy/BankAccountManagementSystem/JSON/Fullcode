@@ -1,0 +1,715 @@
+JSONMemoryRepo.cs
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
+using BankManagementSystem.Exceptions;
+using BankManagementSystem.Models;
+using BankManagementSystem.Repos;
+using System.Xml;
+
+namespace BankManagementSystem.Databases
+{
+    /// <summary>
+    /// Represents a repository for managing accounts in a JSON file.
+    /// </summary>
+    public class AccountJsonRepo : IAccountRepo
+    {
+        /// <summary>
+        /// Gets the instance of the AccountJsonRepo class.
+        /// </summary>
+        private static AccountJsonRepo _instance;
+
+        /// <summary>
+        /// Initializes a new instance of the AccountJsonRepo class.
+        /// </summary>
+        private AccountJsonRepo()
+        {
+            LoadAccountsFromJson();
+        }
+
+        /// <summary>
+        /// Loads accounts from a JSON file.
+        /// </summary>
+        private void LoadAccountsFromJson()
+        {
+            try
+            {
+                string filePath = Path.Combine(Environment.CurrentDirectory, "accounts.json");
+                if (File.Exists(filePath))
+                {
+                    var json = File.ReadAllText(filePath);
+                    accounts = JsonConvert.DeserializeObject<ObservableCollection<Account>>(json);
+                }
+                else
+                {
+                    accounts = new ObservableCollection<Account>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Saves accounts to a JSON file.
+        /// </summary>
+        private void SaveAccountsToJson()
+        {
+            try
+            {
+                string filePath = Path.Combine(Environment.CurrentDirectory, "accounts.json");
+                var json = JsonConvert.SerializeObject(accounts, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Creates an object for the AccountJsonRepo class
+        /// </summary>
+        public static AccountJsonRepo Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AccountJsonRepo();
+                }
+                return _instance;
+            }
+        }
+
+        private ObservableCollection<Account> accounts;
+
+        /// <summary>
+        /// Creates a new account in the repository.
+        /// </summary>
+        /// <param name="account">The account to create.</param>
+        /// <exception cref="AccountException">Thrown if an error occurs while creating the account.</exception>
+        /// 
+
+        private void InitializeAccounts()
+        {
+            accounts.Add(new Account
+            {
+                AccountNumber = 12356898,
+                Name = "Sahla",
+                Balance = 0,
+                Type = "savings",
+                Email = "sahla@gmail.com",
+                PhoneNumber = "98789653",
+                Address = "dhgjhj",
+                IsActive = true,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+            });
+            
+        }
+        public void Create(Account account)
+        {
+            try
+            {
+                accounts.Add(account);
+                SaveAccountsToJson();
+            }
+            catch (AccountException ae)
+            {
+                throw new AccountException("Error in creating account");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing account in the repository.
+        /// </summary>
+        /// <param name="account">The account to update.</param>
+        /// <exception cref="AccountException">Thrown if the account does not exist.</exception>
+        public void Update(Account account)
+        {
+            try
+            {
+                var existingAccount = accounts.FirstOrDefault(a => a.AccountNumber == account.AccountNumber);
+                if (existingAccount != null)
+                {
+                    existingAccount.Address = account.Address;
+                    SaveAccountsToJson();
+                }
+                else
+                {
+                    throw new AccountException("Account doesn't exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all accounts from the repository.
+        /// </summary>
+        /// <returns>A collection of all accounts in the repository.</returns>
+        /// <exception cref="AccountException">Thrown if an error occurs while reading accounts.</exception>
+        public ObservableCollection<Account> ReadAll()
+        {
+            try
+            {
+                return accounts;
+            }
+            catch (AccountException ae)
+            {
+                throw new AccountException("Error reading accounts");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Deletes an account from the repository.
+        /// </summary>
+        /// <param name="acNo">The account number of the account to delete.</param>
+        /// <param name="account">The account to delete.</param>
+        public void Delete(int acNo, Account account)
+        {
+            try
+            {
+                var existingAccount = accounts.FirstOrDefault(a => a.AccountNumber == acNo);
+                if (existingAccount != null)
+                {
+                    accounts.Remove(existingAccount);
+                    SaveAccountsToJson();
+                }
+                else
+                {
+                    throw new AccountException("Account doesn't exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Delete(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deposit(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Withdrw(int acNo, int Amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CalculateInterestAndUpdateBalance()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+        /// <summary>
+        /// Deposits a specified amount into an account.
+        /// </summary>
+        /// <param name="acNo">The account number of the account to deposit into.</param>
+        /// <param name="Amount">The amount to deposit.</param>
+
+AccountViewModel.cs
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using BankManagementSystem.Commands;
+using BankManagementSystem.Databases;
+using BankManagementSystem.Exceptions;
+using BankManagementSystem.Models;
+using BankManagementSystem.Repos;
+
+namespace BankManagementSystem.ViewModels
+{
+    public delegate void DWidnowClose();
+
+    // <summary>
+    /// Represents a view model for managing accounts.
+    /// </summary>
+    public class AccountViewModel : ViewModelBase
+    {
+
+        private Account _newAccount = null;
+       
+        public DWidnowClose NewWindowClose;
+        public DWidnowClose EditWindowClose;
+
+        /// <summary>
+        /// Gets or sets the new account.
+        /// </summary>
+        public Account NewAccount
+        {
+            get { return _newAccount; }
+            set
+            {
+                _newAccount = value;
+                onPropertyChanged(nameof(NewAccount));
+            }
+        }
+
+        private Account _selectedAccount = null;
+        /// <summary>
+        /// Gets or sets the selected account.
+        /// </summary>
+        public Account SelectedAccount
+        {
+            get => _selectedAccount;
+            set { 
+                _selectedAccount = value; 
+                onPropertyChanged(nameof(SelectedAccount)); 
+            }
+        }
+
+
+
+        /// <summary>
+        /// Gets the accounts repository.
+        /// </summary>
+        private IAccountRepo _repo = AccountJsonRepo.Instance;
+
+        // <summary>
+        /// Gets the collection of accounts.
+        /// </summary>
+        public ObservableCollection<Account> Accounts
+        {
+            get
+            {
+                try
+                {
+                    return _repo.ReadAll();
+                }
+                catch(AccountException ae)
+                {
+                    Logger.log.Error(ae.Message);
+                    throw;
+                }
+                
+            }
+        }
+
+        /// <summary>
+        /// Gets the command for creating a new account.
+        /// </summary>
+        public ICommand CreateCommand { get; }
+
+        /// <summary>
+        /// Gets the command for updating an existing account.
+        /// </summary>
+        public ICommand UpdateCommand { get; }
+
+        /// <summary>
+        /// Gets the command for deleting an existing account.
+        /// </summary>
+        public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountViewModel"/> class.
+        /// </summary>
+        public AccountViewModel()
+        {
+            this.NewAccount = new Account
+            {
+                AccountNumber = 00000,
+                Name = "",
+                Balance = 0,
+                Type = "",
+                Email = "",
+                PhoneNumber = "",
+                Address = "",
+                IsActive = false,
+                InterestPercentage = "0",
+                TransactionCount = 0,
+                LastTransactionDate = DateTime.Now,
+
+
+            };
+            CreateCommand = new RelayCommand(Create);
+            UpdateCommand = new RelayCommand(Update);
+            DeleteCommand = new RelayCommand(Delete);
+           
+        }
+
+        /// <summary>
+        /// Creates a new account.
+        /// </summary>
+
+        public void Create()
+        {
+            Account newAccount = new Account
+            {
+                AccountNumber = NewAccount.AccountNumber,
+                Name = NewAccount.Name,
+                Balance = NewAccount.Balance,
+                Type = NewAccount.Type,
+                Email = NewAccount.Email,
+                PhoneNumber = NewAccount.PhoneNumber,
+                Address = NewAccount.Address,
+                IsActive = NewAccount.IsActive,
+                InterestPercentage = NewAccount.InterestPercentage,
+                TransactionCount = NewAccount.TransactionCount,
+                LastTransactionDate = NewAccount.LastTransactionDate,
+            };
+            var result = MessageBox.Show(messageBoxText: "Are you sure to create?",
+                    caption: "Confirm",
+                    button: MessageBoxButton.YesNo,
+                    icon: MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            try
+            {
+                _repo.Create(newAccount);
+                result = MessageBox.Show(messageBoxText: "Created Successfully",
+                   caption: "Alert",
+                   button: MessageBoxButton.OK,
+                   icon: MessageBoxImage.Information);
+                Logger.log.Info($"An account with acoount number {newAccount.AccountNumber} has been created successfully");
+                this.NewAccount = new Account { AccountNumber = 0, Name = "", Balance = 0, Type = "", Email = "", PhoneNumber = "", Address = "", IsActive = false, InterestPercentage = "0", TransactionCount = 0, LastTransactionDate = DateTime.Now };
+            }
+            catch(AccountException ae)
+            {
+                Logger.log.Error(ae.Message);
+            }
+
+            if (NewWindowClose != null)
+            {
+                NewWindowClose();
+            }
+        }
+        /// <summary>
+        /// Updates an existing account.
+        /// </summary>
+        public void Update()
+        {
+            if (this.SelectedAccount == null)
+            {
+                return;
+            }
+
+            var res = MessageBox.Show(messageBoxText: "Are you sure to Update?",
+                    caption: "Confirm",
+                    button: MessageBoxButton.YesNo,
+                    icon: MessageBoxImage.Question);
+
+            if (res != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                _repo.Update(this.SelectedAccount);
+                this.SelectedAccount = this.SelectedAccount;
+                var result = MessageBox.Show(messageBoxText: $"Account {SelectedAccount.AccountNumber} is updated successfully",
+                        caption: "Alert",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Information);
+                Logger.log.Info($"Account {SelectedAccount.AccountNumber} is updated successfully");
+            }
+            catch(AccountException ae)
+            {
+                Logger.log.Error(ae.Message);
+            }
+            
+
+            if (EditWindowClose != null)
+            {
+                EditWindowClose();
+            }
+        }
+
+        /// <summary>
+        /// Deletes an existing account.
+        /// </summary>
+        public void Delete()
+        {
+            if (this.SelectedAccount == null)
+            {
+                var result = MessageBox.Show(messageBoxText: "Please select an account",
+                    caption: "Alert",
+                    button: MessageBoxButton.OK,
+                    icon: MessageBoxImage.Information);
+                return;
+            }
+
+            var res = MessageBox.Show(messageBoxText: "Are you sure to Delete?",
+                    caption: "Confirm",
+                    button: MessageBoxButton.YesNo,
+                    icon: MessageBoxImage.Question);
+
+            if (res != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+
+                _repo.Delete(this.SelectedAccount);
+                this.SelectedAccount = this.SelectedAccount;
+                var result = MessageBox.Show(messageBoxText: $"Account {SelectedAccount.AccountNumber} is marked as deleted successfully",
+                        caption: "Alert",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Information);
+                Logger.log.Info($"Account {SelectedAccount.AccountNumber} is marked as deleted successfully");
+            }
+            catch (AccountException ae)
+            {
+                Logger.log.Error(ae.Message);
+            }
+        }
+
+
+
+    }
+
+}
+
+DepositViewModel.cs
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BankManagementSystem.Databases;
+using BankManagementSystem.Models;
+using BankManagementSystem.Repos;
+using System.Windows.Input;
+using BankManagementSystem.Commands;
+using System.Windows;
+using BankManagementSystem.Exceptions;
+
+namespace BankManagementSystem.ViewModels
+{
+    /// <summary>
+    /// Represents a view model for depositing money into an account.
+    /// </summary>
+    public class DepositViewModel : ViewModelBase
+    {
+        /// <summary>
+        /// Gets or sets the account number.
+        /// </summary>
+        private int _accountNumber;
+        public int AccountNumber
+        {
+            get { return _accountNumber; }
+            set
+            {
+                _accountNumber = value;
+                onPropertyChanged(nameof(AccountNumber));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount to deposit.
+        /// </summary>
+        private int _amount;
+        public int Amount
+        {
+            get { return _amount; }
+            set
+            {
+                _amount = value;
+                onPropertyChanged(nameof(Amount));
+            }
+        }
+
+        /// <summary>
+        /// Gets the accounts repository.
+        /// </summary>
+        private IAccountRepo _repo = AccountJsonRepo.Instance;
+
+        /// <summary>
+        /// Gets the command for depositing money into an account.
+        /// </summary>
+        public ICommand DepositCommand { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DepositViewModel"/> class.
+        /// </summary>
+        public DepositViewModel()
+        {
+            DepositCommand = new RelayCommand(Deposit);
+        }
+
+        /// <summary>
+        /// Deposits money into an account.
+        /// </summary>
+        public void Deposit()
+        {
+            var result = MessageBox.Show(messageBoxText: "Are you sure to Deposit?",
+                    caption: "Confirm",
+                    button: MessageBoxButton.YesNo,
+                    icon: MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            try
+            {
+                _repo.Deposit(AccountNumber, Amount);
+                MessageBox.Show(messageBoxText: $"Deposited Successfully to account {AccountNumber}",
+                        caption: "Alert",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Information);
+                Logger.log.Info($"Deposited {Amount} rupees Successfully to account {AccountNumber}");
+                this.AccountNumber = 0;
+                this.Amount = 0;
+            }
+            catch (AccountException ae)
+            {
+                MessageBox.Show(messageBoxText: $"{ae.Message}",
+                   caption: "Warning",
+                   button: MessageBoxButton.OK,
+                   icon: MessageBoxImage.Warning);
+
+                Logger.log.Error(ae.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex.Message);
+            }
+        }
+    }
+}
+
+WithdrawViewModel.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BankManagementSystem.Commands;
+using BankManagementSystem.Databases;
+using BankManagementSystem.Repos;
+using System.Windows.Input;
+using System.Windows;
+using BankManagementSystem.Exceptions;
+
+namespace BankManagementSystem.ViewModels
+{
+    /// <summary>
+    /// Represents a view model for withdrawing money from an account.
+    /// </summary>
+    public class WithdrawViewModel : ViewModelBase
+    {
+        /// <summary>
+        /// Gets or sets the account number.
+        /// </summary>
+        private int _accountNumber;
+        public int AccountNumber
+        {
+            get { return _accountNumber; }
+            set
+            {
+                _accountNumber = value;
+                onPropertyChanged(nameof(AccountNumber));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount to withdraw.
+        /// </summary>
+        private int _amount;
+        public int Amount
+        {
+            get { return _amount; }
+            set
+            {
+                _amount = value;
+                onPropertyChanged(nameof(Amount));
+            }
+        }
+
+        /// <summary>
+        /// Gets the accounts repository.
+        /// </summary>
+        private IAccountRepo _repo = AccountJsonRepo.Instance;
+
+        /// <summary>
+        /// Gets the command for withdrawing money from an account.
+        /// </summary>
+        public ICommand WithdrawCommand { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WithdrawViewModel"/> class.
+        /// </summary>
+        public WithdrawViewModel()
+        {
+            WithdrawCommand = new RelayCommand(Withdraw);
+        }
+
+        /// <summary>
+        /// Withdraws money from an account.
+        /// </summary>
+        /// <exception cref="AccountException">Thrown if the account does not exist or if the balance is insufficient.</exception>
+        public void Withdraw()
+        {
+            var result = MessageBox.Show(messageBoxText: "Are you sure to Withdraw?",
+                    caption: "Confirm",
+                    button: MessageBoxButton.YesNo,
+                    icon: MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            try
+            {
+                _repo.Withdrw(AccountNumber, Amount);
+                MessageBox.Show(messageBoxText: $"Withdrawed Successfully from account {AccountNumber}",
+                        caption: "Alert",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Information);
+                Logger.log.Info($"Withdrawed {Amount} rupees Successfully from account {AccountNumber}");
+                this.AccountNumber = 0;
+                this.Amount = 0;
+            }
+            catch (AccountException ae)
+            {
+                MessageBox.Show(messageBoxText: $"{ae.Message}",
+                   caption: "Warning",
+                   button: MessageBoxButton.OK,
+                   icon: MessageBoxImage.Warning);
+
+                Logger.log.Error(ae.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex.Message);
+            }
+        }
+    }
+}
